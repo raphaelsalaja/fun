@@ -1,0 +1,19 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="400" height="400">
+	<title>Logo - Icon - Black on White</title>
+	<defs>
+		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
+			<path d="m213 117h574v765.33h-574z"/>
+		</clipPath>
+	</defs>
+	<style>
+		.s0 { fill: #000000 } 
+	</style>
+	<g id="Clip-Path" clip-path="url(#cp1)">
+		<g>
+			<path class="s0" d="m459.9 170.1l295.6 157.4v344.4l-295.6 157.3z"/>
+			<path class="s0" d="m428 117v765.3l359.4-191.3v-382.7zm63.8 106.2l231.8 123.4v306.1l-231.8 123.4z"/>
+			<path class="s0" d="m320.4 117v765.3l53.7-28.6v-708.1z"/>
+			<path class="s0" d="m213 117v765.3l53.7-28.6v-708.1z"/>
+		</g>
+	</g>
+</svg>
