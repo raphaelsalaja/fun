@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 export function Field({ ...props }: FieldProps) {
-  const { sourceAmount, setSourceAmount } = useConverter();
+  const { amount, setAmount } = useConverter();
 
   return (
     <div className={styles.field}>
@@ -12,8 +12,8 @@ export function Field({ ...props }: FieldProps) {
         {...props}
         placeholder="0"
         className={styles.input}
-        value={sourceAmount || ""}
-        onChange={(e) => setSourceAmount(Number(e.target.value) || 0)}
+        value={amount || ""}
+        onChange={(e) => setAmount(Number(e.target.value) || 0)}
       />
     </div>
   );
