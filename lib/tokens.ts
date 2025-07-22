@@ -3,7 +3,7 @@ interface Token {
   symbol: string;
 }
 
-export const TOKENS = [
+export const TOKENS: Token[] = [
   { chainId: "1", symbol: "USDC" },
   { chainId: "137", symbol: "USDT" },
   { chainId: "8453", symbol: "ETH" },

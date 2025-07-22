@@ -35,7 +35,7 @@ function ConverterContent() {
           <Converter.Value value={targetAmount} />
           <Converter.TargetToken />
         </Converter.Section>
-        <Converter.Swap onClick={swapTokens} />
+        <Converter.Swap />
       </Converter.Stack>
     </Converter.Root>
   );

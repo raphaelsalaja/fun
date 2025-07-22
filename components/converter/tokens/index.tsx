@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { Check, Search } from "@/components/icons";
+import { useGetChainListAssets } from "@/hooks/chainlist";
 import { useGetAssetsSimple } from "@/hooks/fun";
 import { useConverter } from "../provider";
 import styles from "./styles.module.css";
@@ -55,7 +56,8 @@ const TokenSelector = memo<TokenSelectorProps>(
     const { data, isLoading } = useGetAssetsSimple();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-
+    const { data: assets } = useGetChainListAssets();
+    console.log("Assets from Chainlist:", assets);
     const filteredTokens = useMemo(() => {
       if (!data || !searchQuery.trim()) return data;
 
@@ -116,7 +118,7 @@ const TokenSelector = memo<TokenSelectorProps>(
                   key={`${tokenSymbol}-label`}
                   className={styles.label}
                 >
-                  {isLoading ? "Loading..." : tokenSymbol}
+                  {tokenSymbol}
                 </motion.div>
               </AnimatePresence>
             </BaseDialog.Trigger>

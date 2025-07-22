@@ -15,11 +15,14 @@ export function useGetAsset(chainId: string, symbol: string) {
       if (!apiKey) {
         throw new Error("NEXT_PUBLIC_FUNKIT_API_KEY is not defined");
       }
-      return getAssetErc20ByChainAndSymbol({
+
+      const asset = getAssetErc20ByChainAndSymbol({
         chainId,
         symbol,
         apiKey,
       });
+
+      return asset;
     },
     staleTime: 5 * 60_000,
     refetchOnWindowFocus: true,
@@ -29,21 +32,36 @@ export function useGetAsset(chainId: string, symbol: string) {
 export function useGetAssetsSimple() {
   return useQuery({
     queryKey: ["tokenList"],
-    queryFn: () => {
+    queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_FUNKIT_API_KEY;
+
       if (!apiKey) {
         throw new Error("NEXT_PUBLIC_FUNKIT_API_KEY is not defined");
       }
-      return Promise.all(
-        TOKENS.map((token) => {
-          return getAssetErc20ByChainAndSymbol({
+
+      // Process tokens sequentially to avoid rate limiting
+      const assets = [];
+      for (const token of TOKENS) {
+        try {
+          console.log(`Fetching ${token.symbol} on chain ${token.chainId}...`);
+          const asset = await getAssetErc20ByChainAndSymbol({
             chainId: token.chainId,
             symbol: token.symbol,
             apiKey,
           });
-        }),
-      );
+          console.log(`Successfully fetched ${token.symbol}:`, asset);
+          assets.push(asset);
+        } catch (error) {
+          console.error(
+            `Failed to fetch asset for ${token.symbol} on chain ${token.chainId}:`,
+            error,
+          );
+        }
+      }
+      return assets;
     },
+    staleTime: 5 * 60_000,
+    retry: 1,
   });
 }
 
