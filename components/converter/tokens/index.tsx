@@ -11,7 +11,6 @@ import {
 } from "react";
 import { Check, Search } from "@/components/icons";
 import { useGetChainListAssets } from "@/hooks/chainlist";
-import { useGetAssetsSimple } from "@/hooks/fun";
 import { useConverter } from "../provider";
 import styles from "./styles.module.css";
 
@@ -43,7 +42,7 @@ const blur = {
 };
 
 interface TokenSelectorProps {
-  token: Partial<Erc20AssetInfo>;
+  token: Erc20AssetInfo | undefined;
   onTokenSelect: (token: Erc20AssetInfo) => void;
   position: "top" | "bottom";
   label: string;
@@ -53,21 +52,21 @@ const MotionImage = motion.create(Image);
 
 const TokenSelector = memo<TokenSelectorProps>(
   ({ token, onTokenSelect, position, label }) => {
-    const { data, isLoading } = useGetAssetsSimple();
+    const { assets, isLoading } = useConverter();
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const { data: assets } = useGetChainListAssets();
-    console.log("Assets from Chainlist:", assets);
+    const { data: chainlistAssets } = useGetChainListAssets();
+    console.log("Assets from Chainlist:", chainlistAssets);
     const filteredTokens = useMemo(() => {
-      if (!data || !searchQuery.trim()) return data;
+      if (!assets || !searchQuery.trim()) return assets;
 
       const query = searchQuery.toLowerCase();
-      return data.filter(
-        (t) =>
+      return assets.filter(
+        (t: Erc20AssetInfo) =>
           t.name?.toLowerCase().includes(query) ||
           t.symbol?.toLowerCase().includes(query),
       );
-    }, [data, searchQuery]);
+    }, [assets, searchQuery]);
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
@@ -91,7 +90,7 @@ const TokenSelector = memo<TokenSelectorProps>(
       [handleTokenSelect],
     );
 
-    const tokenSymbol = token.symbol || "";
+    const tokenSymbol = token?.symbol || "";
 
     return (
       <div data-position={position} className={styles.dialog}>
@@ -144,8 +143,8 @@ const TokenSelector = memo<TokenSelectorProps>(
                   {isLoading ? (
                     <div>Loading tokens...</div>
                   ) : (
-                    filteredTokens?.map((listToken) => {
-                      const isSelected = token.symbol === listToken.symbol;
+                    filteredTokens?.map((listToken: Erc20AssetInfo) => {
+                      const isSelected = token?.symbol === listToken.symbol;
                       return (
                         <button
                           key={`${listToken.symbol}-${listToken.chain}`}

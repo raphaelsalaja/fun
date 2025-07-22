@@ -2,8 +2,7 @@
 
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import React from "react";
-import { useGetAsset, useGetAssetPriceInfo } from "@/hooks/fun";
-import { TOKENS } from "@/lib/tokens";
+import { useGetAssetPriceInfo, useGetAssetsSimple } from "@/hooks/fun";
 
 export interface PriceInfo {
   unitPrice: number;
@@ -12,14 +11,15 @@ export interface PriceInfo {
 }
 
 export interface ConverterState {
-  sourceToken: Erc20AssetInfo;
-  targetToken: Erc20AssetInfo;
+  sourceToken: Erc20AssetInfo | undefined;
+  targetToken: Erc20AssetInfo | undefined;
   sourceAmount: number;
   targetAmount: number;
   usdAmount: number;
   isLoading: boolean;
   hasError: boolean;
   currency: string;
+  assets: Erc20AssetInfo[] | undefined;
   setSourceToken: (token: Erc20AssetInfo) => void;
   setTargetToken: (token: Erc20AssetInfo) => void;
   setSourceAmount: (amount: number) => void;
@@ -27,8 +27,6 @@ export interface ConverterState {
   setUsdAmount: (amount: number) => void;
   setCurrency: (currency: string) => void;
   swapTokens: () => void;
-  sourceTokenInfo: Erc20AssetInfo | undefined;
-  targetTokenInfo: Erc20AssetInfo | undefined;
   sourcePrice: PriceInfo | undefined;
   targetPrice: PriceInfo | undefined;
 }
@@ -37,76 +35,73 @@ const ConverterContext = React.createContext<ConverterState | null>(null);
 
 interface ConverterProviderProps {
   children: React.ReactNode;
-  initialSourceToken?: Partial<Erc20AssetInfo>;
-  initialTargetToken?: Partial<Erc20AssetInfo>;
   initialCurrency?: string;
 }
 
 export function ConverterProvider({
   children,
-  initialSourceToken = { ...TOKENS[2] },
-  initialTargetToken = { ...TOKENS[3] },
   initialCurrency = "USD",
 }: ConverterProviderProps) {
-  const [sourceToken, setSourceToken] =
-    React.useState<Partial<Erc20AssetInfo>>(initialSourceToken);
-  const [targetToken, setTargetToken] =
-    React.useState<Partial<Erc20AssetInfo>>(initialTargetToken);
+  const {
+    data: assets,
+    error: assetsError,
+    isLoading: assetsLoading,
+  } = useGetAssetsSimple();
+
+  const [sourceToken, setSourceToken] = React.useState<
+    Erc20AssetInfo | undefined
+  >();
+  const [targetToken, setTargetToken] = React.useState<
+    Erc20AssetInfo | undefined
+  >();
   const [sourceAmount, setSourceAmount] = React.useState<number>(0);
   const [targetAmount, setTargetAmount] = React.useState<number>(0);
   const [usdAmount, setUsdAmount] = React.useState<number>(0);
   const [currency, setCurrency] = React.useState<string>(initialCurrency);
 
-  const {
-    data: sourceTokenInfo,
-    error: sourceInfoError,
-    isLoading: sourceInfoLoading,
-  } = useGetAsset(sourceToken.chain, sourceToken.symbol);
-
-  const {
-    data: targetTokenInfo,
-    error: targetInfoError,
-    isLoading: targetInfoLoading,
-  } = useGetAsset(targetToken.chain, targetToken.symbol);
+  // Initialize tokens when assets are loaded
+  React.useEffect(() => {
+    if (assets && assets.length >= 2 && !sourceToken && !targetToken) {
+      setSourceToken(assets[0]);
+      setTargetToken(assets[1]);
+    }
+  }, [assets, sourceToken, targetToken]);
 
   const {
     data: sourcePrice,
     error: sourcePriceError,
     isLoading: sourcePriceLoading,
-  } = useGetAssetPriceInfo(sourceTokenInfo?.chain, sourceTokenInfo?.address);
+  } = useGetAssetPriceInfo(sourceToken?.chain, sourceToken?.address || "");
 
   const {
     data: targetPrice,
     error: targetPriceError,
     isLoading: targetPriceLoading,
-  } = useGetAssetPriceInfo(targetTokenInfo?.chain, targetTokenInfo?.address);
+  } = useGetAssetPriceInfo(targetToken?.chain, targetToken?.address || "");
 
   const isLoading = React.useMemo(() => {
     return (
-      sourceInfoLoading ||
-      targetInfoLoading ||
+      assetsLoading ||
       sourcePriceLoading ||
       targetPriceLoading ||
       !sourcePrice ||
-      !targetPrice
+      !targetPrice ||
+      !sourceToken ||
+      !targetToken
     );
   }, [
-    sourceInfoLoading,
-    targetInfoLoading,
+    assetsLoading,
     sourcePriceLoading,
     targetPriceLoading,
     sourcePrice,
     targetPrice,
+    sourceToken,
+    targetToken,
   ]);
 
   const hasError = React.useMemo(() => {
-    return Boolean(
-      sourceInfoError ||
-        targetInfoError ||
-        sourcePriceError ||
-        targetPriceError,
-    );
-  }, [sourceInfoError, targetInfoError, sourcePriceError, targetPriceError]);
+    return Boolean(assetsError || sourcePriceError || targetPriceError);
+  }, [assetsError, sourcePriceError, targetPriceError]);
 
   const handleSetSourceAmount = React.useCallback(
     (amount: number) => {
@@ -188,6 +183,7 @@ export function ConverterProvider({
       currency,
       isLoading,
       hasError,
+      assets,
       setSourceToken,
       setTargetToken,
       setSourceAmount: handleSetSourceAmount,
@@ -195,10 +191,20 @@ export function ConverterProvider({
       setUsdAmount: handleSetUsdAmount,
       setCurrency,
       swapTokens,
-      sourceTokenInfo,
-      targetTokenInfo,
-      sourcePrice,
-      targetPrice,
+      sourcePrice: sourcePrice
+        ? {
+            unitPrice: sourcePrice.unitPrice,
+            currency: currency,
+            lastUpdated: new Date().toISOString(),
+          }
+        : undefined,
+      targetPrice: targetPrice
+        ? {
+            unitPrice: targetPrice.unitPrice,
+            currency: currency,
+            lastUpdated: new Date().toISOString(),
+          }
+        : undefined,
     }),
     [
       sourceToken,
@@ -209,12 +215,11 @@ export function ConverterProvider({
       currency,
       isLoading,
       hasError,
+      assets,
       handleSetSourceAmount,
       handleSetTargetAmount,
       handleSetUsdAmount,
       swapTokens,
-      sourceTokenInfo,
-      targetTokenInfo,
       sourcePrice,
       targetPrice,
     ],
