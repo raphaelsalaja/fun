@@ -155,14 +155,15 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
     setTargetAmount(tempAmount);
   }, [sourceToken, targetToken, sourceAmount, targetAmount]);
 
+  // Recalculate token amounts when prices change, but preserve USD amount
   React.useEffect(() => {
-    if (sourcePrice?.unitPrice && targetPrice?.unitPrice && sourceAmount > 0) {
-      const newAmount = sourceAmount * sourcePrice.unitPrice;
-      setAmount(newAmount);
-      const newTargetAmount = newAmount / targetPrice.unitPrice;
+    if (sourcePrice?.unitPrice && targetPrice?.unitPrice && amount > 0) {
+      const newSourceAmount = amount / sourcePrice.unitPrice;
+      const newTargetAmount = amount / targetPrice.unitPrice;
+      setSourceAmount(newSourceAmount);
       setTargetAmount(newTargetAmount);
     }
-  }, [sourcePrice?.unitPrice, targetPrice?.unitPrice, sourceAmount]);
+  }, [sourcePrice?.unitPrice, targetPrice?.unitPrice, amount]);
 
   const contextValue: ConverterState = React.useMemo(
     () => ({

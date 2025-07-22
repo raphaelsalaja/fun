@@ -1,19 +1,22 @@
+import CurrencyInput, {
+  type CurrencyInputProps,
+} from "react-currency-input-field";
 import { useConverter } from "../provider";
 import styles from "./styles.module.css";
 
-interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-export function Field({ ...props }: FieldProps) {
+export function Field({ ...props }: CurrencyInputProps) {
   const { amount, setAmount } = useConverter();
 
   return (
     <div className={styles.field}>
-      <input
+      <CurrencyInput
         {...props}
-        placeholder="0"
+        placeholder="$0.00"
+        prefix="$"
+        decimalsLimit={2}
         className={styles.input}
         value={amount || ""}
-        onChange={(e) => setAmount(Number(e.target.value) || 0)}
+        onValueChange={(value) => setAmount(Number(value) || 0)}
       />
     </div>
   );
