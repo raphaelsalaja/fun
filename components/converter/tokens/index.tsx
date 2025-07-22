@@ -2,15 +2,8 @@ import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion, type Transition } from "motion/react";
 import Image from "next/image";
-import {
-  type KeyboardEvent,
-  memo,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Check, Search } from "@/components/icons";
-import { useGetChainListAssets } from "@/hooks/chainlist";
 import { useConverter } from "../provider";
 import styles from "./styles.module.css";
 
@@ -53,10 +46,10 @@ const MotionImage = motion.create(Image);
 const TokenSelector = memo<TokenSelectorProps>(
   ({ token, onTokenSelect, position, label }) => {
     const { assets, isLoading } = useConverter();
+
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const { data: chainlistAssets } = useGetChainListAssets();
-    console.log("Assets from Chainlist:", chainlistAssets);
+
     const filteredTokens = useMemo(() => {
       if (!assets || !searchQuery.trim()) return assets;
 
@@ -75,19 +68,6 @@ const TokenSelector = memo<TokenSelectorProps>(
         setSearchQuery("");
       },
       [onTokenSelect],
-    );
-
-    const handleKeyDown = useCallback(
-      (
-        event: KeyboardEvent<HTMLButtonElement>,
-        selectedToken: Erc20AssetInfo,
-      ) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          handleTokenSelect(selectedToken);
-        }
-      },
-      [handleTokenSelect],
     );
 
     const tokenSymbol = token?.symbol || "";
@@ -151,7 +131,6 @@ const TokenSelector = memo<TokenSelectorProps>(
                           type="button"
                           className={styles.item}
                           onClick={() => handleTokenSelect(listToken)}
-                          onKeyDown={(e) => handleKeyDown(e, listToken)}
                           data-selected={isSelected}
                           aria-pressed={isSelected}
                         >
