@@ -148,9 +148,12 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
 
   const swapTokens = React.useCallback(() => {
     const tempToken = sourceToken;
+    const tempAmount = sourceAmount;
     setSourceToken(targetToken);
     setTargetToken(tempToken);
-  }, [sourceToken, targetToken]);
+    setSourceAmount(targetAmount);
+    setTargetAmount(tempAmount);
+  }, [sourceToken, targetToken, sourceAmount, targetAmount]);
 
   React.useEffect(() => {
     if (sourcePrice?.unitPrice && targetPrice?.unitPrice && sourceAmount > 0) {

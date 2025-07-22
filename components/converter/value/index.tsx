@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 const format: Format = {
   style: "decimal",
   minimumIntegerDigits: 1,
-  minimumFractionDigits: 0,
+  minimumFractionDigits: 2,
   maximumFractionDigits: 6,
   useGrouping: "auto",
   roundingPriority: "auto",
