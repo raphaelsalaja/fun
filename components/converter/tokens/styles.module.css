@@ -78,7 +78,7 @@
   flex-direction: column;
   gap: 12px;
   width: 384px;
-  height: 640px;
+  max-height: 640px;
   padding: 12px;
   color: var(--text-primary);
   background: var(--background-primary);

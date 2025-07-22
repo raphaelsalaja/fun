@@ -19,7 +19,6 @@ const SPRING_CONFIG = {
 };
 
 const scale = {
-  layout: "position" as const,
   initial: { opacity: 0, scale: 0 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0 },
@@ -27,7 +26,6 @@ const scale = {
 };
 
 const blur = {
-  layout: "position" as const,
   initial: { opacity: 0, filter: "blur(4px)" },
   animate: { opacity: 1, filter: "blur(0px)" },
   exit: { opacity: 0, filter: "blur(4px)" },
@@ -85,6 +83,7 @@ const TokenSelector = memo<TokenSelectorProps>(
                   {...scale}
                   height={16}
                   width={16}
+                  layout="position"
                   key={tokenSymbol}
                   className={styles.icon}
                   alt={`${tokenSymbol} icon`}
@@ -94,6 +93,7 @@ const TokenSelector = memo<TokenSelectorProps>(
               <AnimatePresence initial={false} mode="popLayout">
                 <motion.div
                   {...blur}
+                  layout="position"
                   key={`${tokenSymbol}-label`}
                   className={styles.label}
                 >
