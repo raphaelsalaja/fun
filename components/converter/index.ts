@@ -1,4 +1,3 @@
-export * from "./currency";
 export * from "./field";
 export * from "./provider";
 export * from "./root";

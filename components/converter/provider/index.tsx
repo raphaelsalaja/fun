@@ -15,17 +15,15 @@ export interface ConverterState {
   targetToken: Erc20AssetInfo | undefined;
   sourceAmount: number;
   targetAmount: number;
-  usdAmount: number;
+  amount: number;
   isLoading: boolean;
   hasError: boolean;
-  currency: string;
   assets: Erc20AssetInfo[] | undefined;
   setSourceToken: (token: Erc20AssetInfo) => void;
   setTargetToken: (token: Erc20AssetInfo) => void;
   setSourceAmount: (amount: number) => void;
   setTargetAmount: (amount: number) => void;
-  setUsdAmount: (amount: number) => void;
-  setCurrency: (currency: string) => void;
+  setAmount: (amount: number) => void;
   swapTokens: () => void;
   sourcePrice: PriceInfo | undefined;
   targetPrice: PriceInfo | undefined;
@@ -35,13 +33,9 @@ const ConverterContext = React.createContext<ConverterState | null>(null);
 
 interface ConverterProviderProps {
   children: React.ReactNode;
-  initialCurrency?: string;
 }
 
-export function ConverterProvider({
-  children,
-  initialCurrency = "USD",
-}: ConverterProviderProps) {
+export function ConverterProvider({ children }: ConverterProviderProps) {
   const {
     data: assets,
     error: assetsError,
@@ -56,8 +50,7 @@ export function ConverterProvider({
   >();
   const [sourceAmount, setSourceAmount] = React.useState<number>(0);
   const [targetAmount, setTargetAmount] = React.useState<number>(0);
-  const [usdAmount, setUsdAmount] = React.useState<number>(0);
-  const [currency, setCurrency] = React.useState<string>(initialCurrency);
+  const [amount, setAmount] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (assets && assets.length >= 2 && !sourceToken && !targetToken) {
@@ -107,11 +100,11 @@ export function ConverterProvider({
       setSourceAmount(amount);
 
       if (sourcePrice?.unitPrice) {
-        const newUsdAmount = amount * sourcePrice.unitPrice;
-        setUsdAmount(newUsdAmount);
+        const newAmount = amount * sourcePrice.unitPrice;
+        setAmount(newAmount);
 
         if (targetPrice?.unitPrice) {
-          const newTargetAmount = newUsdAmount / targetPrice.unitPrice;
+          const newTargetAmount = newAmount / targetPrice.unitPrice;
           setTargetAmount(newTargetAmount);
         }
       }
@@ -124,11 +117,11 @@ export function ConverterProvider({
       setTargetAmount(amount);
 
       if (targetPrice?.unitPrice) {
-        const newUsdAmount = amount * targetPrice.unitPrice;
-        setUsdAmount(newUsdAmount);
+        const newAmount = amount * targetPrice.unitPrice;
+        setAmount(newAmount);
 
         if (sourcePrice?.unitPrice) {
-          const newSourceAmount = newUsdAmount / sourcePrice.unitPrice;
+          const newSourceAmount = newAmount / sourcePrice.unitPrice;
           setSourceAmount(newSourceAmount);
         }
       }
@@ -136,9 +129,9 @@ export function ConverterProvider({
     [sourcePrice?.unitPrice, targetPrice?.unitPrice],
   );
 
-  const handleSetUsdAmount = React.useCallback(
+  const handleSetAmount = React.useCallback(
     (amount: number) => {
-      setUsdAmount(amount);
+      setAmount(amount);
 
       if (sourcePrice?.unitPrice) {
         const newSourceAmount = amount / sourcePrice.unitPrice;
@@ -161,9 +154,9 @@ export function ConverterProvider({
 
   React.useEffect(() => {
     if (sourcePrice?.unitPrice && targetPrice?.unitPrice && sourceAmount > 0) {
-      const newUsdAmount = sourceAmount * sourcePrice.unitPrice;
-      setUsdAmount(newUsdAmount);
-      const newTargetAmount = newUsdAmount / targetPrice.unitPrice;
+      const newAmount = sourceAmount * sourcePrice.unitPrice;
+      setAmount(newAmount);
+      const newTargetAmount = newAmount / targetPrice.unitPrice;
       setTargetAmount(newTargetAmount);
     }
   }, [sourcePrice?.unitPrice, targetPrice?.unitPrice, sourceAmount]);
@@ -174,8 +167,7 @@ export function ConverterProvider({
       targetToken,
       sourceAmount,
       targetAmount,
-      usdAmount,
-      currency,
+      amount,
       isLoading,
       hasError,
       assets,
@@ -183,20 +175,19 @@ export function ConverterProvider({
       setTargetToken,
       setSourceAmount: handleSetSourceAmount,
       setTargetAmount: handleSetTargetAmount,
-      setUsdAmount: handleSetUsdAmount,
-      setCurrency,
+      setAmount: handleSetAmount,
       swapTokens,
       sourcePrice: sourcePrice
         ? {
             unitPrice: sourcePrice.unitPrice,
-            currency: currency,
+            currency: "USD",
             lastUpdated: new Date().toISOString(),
           }
         : undefined,
       targetPrice: targetPrice
         ? {
             unitPrice: targetPrice.unitPrice,
-            currency: currency,
+            currency: "USD",
             lastUpdated: new Date().toISOString(),
           }
         : undefined,
@@ -206,14 +197,13 @@ export function ConverterProvider({
       targetToken,
       sourceAmount,
       targetAmount,
-      usdAmount,
-      currency,
+      amount,
       isLoading,
       hasError,
       assets,
       handleSetSourceAmount,
       handleSetTargetAmount,
-      handleSetUsdAmount,
+      handleSetAmount,
       swapTokens,
       sourcePrice,
       targetPrice,

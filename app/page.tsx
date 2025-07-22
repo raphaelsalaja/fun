@@ -13,26 +13,18 @@ export default function Page() {
 }
 
 function ConverterContent() {
-  const { sourceAmount, targetAmount, usdAmount, setSourceAmount, swapTokens } =
-    Converter.useConverter();
-
   return (
     <Converter.Root>
       <Converter.Section>
-        <Converter.Currency />
-        <Converter.Field
-          value={sourceAmount || ""}
-          onChange={(e) => setSourceAmount(Number(e.target.value) || 0)}
-        />
-        <Converter.Currency />
+        <Converter.Field />
       </Converter.Section>
       <Converter.Stack>
         <Converter.Section variant="secondary">
-          <Converter.Value value={usdAmount} />
+          <Converter.SourceValue />
           <Converter.SourceToken />
         </Converter.Section>
         <Converter.Section variant="secondary">
-          <Converter.Value value={targetAmount} />
+          <Converter.TargetValue />
           <Converter.TargetToken />
         </Converter.Section>
         <Converter.Swap />
