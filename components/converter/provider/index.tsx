@@ -59,7 +59,6 @@ export function ConverterProvider({
   const [usdAmount, setUsdAmount] = React.useState<number>(0);
   const [currency, setCurrency] = React.useState<string>(initialCurrency);
 
-  // Initialize tokens when assets are loaded
   React.useEffect(() => {
     if (assets && assets.length >= 2 && !sourceToken && !targetToken) {
       setSourceToken(assets[0]);
@@ -158,11 +157,7 @@ export function ConverterProvider({
     const tempToken = sourceToken;
     setSourceToken(targetToken);
     setTargetToken(tempToken);
-
-    const tempAmount = sourceAmount;
-    setSourceAmount(targetAmount);
-    setTargetAmount(tempAmount);
-  }, [sourceToken, targetToken, sourceAmount, targetAmount]);
+  }, [sourceToken, targetToken]);
 
   React.useEffect(() => {
     if (sourcePrice?.unitPrice && targetPrice?.unitPrice && sourceAmount > 0) {
