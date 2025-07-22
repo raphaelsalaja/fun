@@ -1,2 +1,19 @@
 @import url(./reset.css);
 @import url(./theme.css);
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: 384px;
+  isolation: isolate;
+}

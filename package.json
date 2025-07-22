@@ -9,10 +9,17 @@
     "lint": "biome check --fix --unsafe . --verbose"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-beta.1",
     "@funkit/api-base": "1.9.5-next.1",
+    "@number-flow/react": "^0.5.10",
+    "@tanstack/react-query": "^5.83.0",
+    "@uniswap/token-lists": "1.0.0-beta.34",
+    "clsx": "^2.1.1",
+    "motion": "^12.23.6",
     "next": "15.4.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-use-measure": "^2.1.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.2",

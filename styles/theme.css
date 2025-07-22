@@ -82,5 +82,5 @@
   --duration-slow: 0.35s;
 
   /* shadows */
-  --shadow-dropdown: oklch(0 0 0 / 0.02) 0px 6px 18px, oklch(0 0 0 / 0.04) 0px 3px 9px, oklch(0 0 0 / 0.04) 0px 1px 1px;
+  --shadow-dialog-trigger: 0px 4px 4px -4px oklch(0 0 0 / 0.08);
 }

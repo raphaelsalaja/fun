@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-
+import Providers from "@/components/providers";
 import "@/styles/main.css";
 
 export const metadata: Metadata = {
@@ -36,7 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>{children}</body>
+      <body className={`${inter.className}`}>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
+      </body>
     </html>
   );
 }
