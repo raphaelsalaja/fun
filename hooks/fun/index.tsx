@@ -42,7 +42,6 @@ export function useGetAsset(chainId: string, symbol: string) {
     staleTime: 5 * 60_000,
     refetchOnWindowFocus: true,
     retry: (failureCount, error) => {
-      // Don't retry on authentication errors
       if (error instanceof Error && error.message.includes("API_KEY")) {
         return false;
       }
@@ -79,12 +78,10 @@ export function useGetAssetsSimple() {
         }
       }
 
-      // If no assets were fetched, throw an error
       if (assets.length === 0) {
         throw new Error("Failed to fetch any token data");
       }
 
-      // Log partial failures but don't fail the entire query
       if (errors.length > 0) {
         console.warn("Partial failures in token fetching:", errors);
       }
@@ -118,7 +115,6 @@ export function useGetAssetPriceInfo(chainId?: string, address?: string) {
     enabled: Boolean(chainId && address),
     staleTime: 15_000,
     retry: (failureCount, error) => {
-      // Don't retry on authentication or missing parameter errors
       if (error instanceof Error) {
         if (
           error.message.includes("API_KEY") ||
