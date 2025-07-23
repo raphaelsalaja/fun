@@ -5,14 +5,14 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   color?: string | "currentColor";
 }
 
-export function Logo(_props: IconProps) {
+export function Logo(props: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill="none"
+      {...props}
     >
       <title>Fun Logo</title>
       <mask

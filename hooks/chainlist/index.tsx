@@ -24,7 +24,7 @@ export function useGetChainListAssets() {
         )
         .map((c) => ({
           chainId: String(c.chainId),
-          symbol: c.nativeCurrency!.symbol,
+          symbol: c.nativeCurrency?.symbol,
         }))
         .slice(0, 10);
     },

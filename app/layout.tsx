@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Providers from "@/components/providers";
+import { Footer } from "@/components/footer";
+import { Providers } from "@/components/providers";
 import "@/styles/main.css";
 
 export const metadata: Metadata = {
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <Providers>
           <main>{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>
