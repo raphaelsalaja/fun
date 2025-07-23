@@ -17,6 +17,8 @@ export interface ConverterState {
   targetAmount: number;
   amount: number;
   isLoading: boolean;
+  isAssetsLoading: boolean;
+  isPriceLoading: boolean;
   hasError: boolean;
   assets: Erc20AssetInfo[] | undefined;
   setSourceToken: (token: Erc20AssetInfo) => void;
@@ -71,25 +73,23 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
     isLoading: targetPriceLoading,
   } = useGetAssetPriceInfo(targetToken?.chain, targetToken?.address || "");
 
+  const isAssetsLoading = React.useMemo(() => {
+    return assetsLoading || !assets;
+  }, [assetsLoading, assets]);
+
+  const isPriceLoading = React.useMemo(() => {
+    return sourcePriceLoading || targetPriceLoading;
+  }, [sourcePriceLoading, targetPriceLoading]);
+
   const isLoading = React.useMemo(() => {
     return (
-      assetsLoading ||
-      sourcePriceLoading ||
-      targetPriceLoading ||
+      isAssetsLoading ||
       !sourcePrice ||
       !targetPrice ||
       !sourceToken ||
       !targetToken
     );
-  }, [
-    assetsLoading,
-    sourcePriceLoading,
-    targetPriceLoading,
-    sourcePrice,
-    targetPrice,
-    sourceToken,
-    targetToken,
-  ]);
+  }, [isAssetsLoading, sourcePrice, targetPrice, sourceToken, targetToken]);
 
   const hasError = React.useMemo(() => {
     return Boolean(assetsError || sourcePriceError || targetPriceError);
@@ -172,6 +172,8 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
       targetAmount,
       amount,
       isLoading,
+      isAssetsLoading,
+      isPriceLoading,
       hasError,
       assets,
       setSourceToken,
@@ -202,6 +204,8 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
       targetAmount,
       amount,
       isLoading,
+      isAssetsLoading,
+      isPriceLoading,
       hasError,
       assets,
       handleSetSourceAmount,
