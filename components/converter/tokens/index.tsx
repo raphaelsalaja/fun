@@ -111,7 +111,7 @@ const TokenSelector = memo<TokenSelectorProps>(
               className={styles.trigger}
               aria-label={`Select ${label} token`}
             >
-              <AnimatePresence initial={false} mode="popLayout">
+              <AnimatePresence initial={false} mode="wait">
                 {isLoading ? (
                   <motion.div
                     key="loading"
@@ -175,9 +175,7 @@ const TokenSelector = memo<TokenSelectorProps>(
                 </div>
                 <div className={styles.list}>
                   {filteredTokens?.length === 0 ? (
-                    <div className={styles.empty}>
-                      No tokens found matching "{searchQuery}"
-                    </div>
+                    <div className={styles.empty}>No Tokens Found</div>
                   ) : (
                     filteredTokens?.map((listToken: Erc20AssetInfo) => {
                       const isSelected = token?.symbol === listToken.symbol;
