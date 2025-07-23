@@ -7,25 +7,47 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { TOKENS } from "@/lib/tokens";
 
+interface ApiError {
+  message: string;
+  status?: number;
+}
+
+const createApiError = (error: unknown): ApiError => {
+  if (error instanceof Error) {
+    return { message: error.message };
+  }
+  return { message: "An unknown error occurred" };
+};
+
 export function useGetAsset(chainId: string, symbol: string) {
   return useQuery({
     queryKey: ["tokenInfo", chainId, symbol],
-    queryFn: () => {
+    queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_FUNKIT_API_KEY;
       if (!apiKey) {
         throw new Error("NEXT_PUBLIC_FUNKIT_API_KEY is not defined");
       }
 
-      const asset = getAssetErc20ByChainAndSymbol({
-        chainId,
-        symbol,
-        apiKey,
-      });
-
-      return asset;
+      try {
+        const asset = await getAssetErc20ByChainAndSymbol({
+          chainId,
+          symbol,
+          apiKey,
+        });
+        return asset;
+      } catch (error) {
+        throw createApiError(error);
+      }
     },
     staleTime: 5 * 60_000,
     refetchOnWindowFocus: true,
+    retry: (failureCount, error) => {
+      // Don't retry on authentication errors
+      if (error instanceof Error && error.message.includes("API_KEY")) {
+        return false;
+      }
+      return failureCount < 3;
+    },
   });
 }
 
@@ -40,6 +62,8 @@ export function useGetAssetsSimple() {
       }
 
       const assets = [];
+      const errors: string[] = [];
+
       for (const token of TOKENS) {
         try {
           const asset = await getAssetErc20ByChainAndSymbol({
@@ -49,35 +73,61 @@ export function useGetAssetsSimple() {
           });
           assets.push(asset);
         } catch (error) {
-          console.error(
-            `Failed to fetch asset for ${token.symbol} on chain ${token.chainId}:`,
-            error,
-          );
+          const errorMessage = `Failed to fetch ${token.symbol} on chain ${token.chainId}`;
+          console.error(errorMessage, error);
+          errors.push(errorMessage);
         }
       }
+
+      // If no assets were fetched, throw an error
+      if (assets.length === 0) {
+        throw new Error("Failed to fetch any token data");
+      }
+
+      // Log partial failures but don't fail the entire query
+      if (errors.length > 0) {
+        console.warn("Partial failures in token fetching:", errors);
+      }
+
       return assets;
     },
     staleTime: 5 * 60_000,
-    retry: 1,
+    retry: 2,
   });
 }
 
 export function useGetAssetPriceInfo(chainId?: string, address?: string) {
   return useQuery({
     queryKey: ["tokenPrice", chainId, address],
-    queryFn: () => {
+    queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_FUNKIT_API_KEY;
       if (!apiKey || !chainId || !address) {
-        throw new Error("Missing required parameters");
+        throw new Error("Missing required parameters for price info");
       }
-      return getAssetPriceInfo({
-        chainId,
-        assetTokenAddress: address,
-        apiKey,
-      });
+
+      try {
+        return await getAssetPriceInfo({
+          chainId,
+          assetTokenAddress: address,
+          apiKey,
+        });
+      } catch (error) {
+        throw createApiError(error);
+      }
     },
     enabled: Boolean(chainId && address),
     staleTime: 15_000,
-    retry: 2,
+    retry: (failureCount, error) => {
+      // Don't retry on authentication or missing parameter errors
+      if (error instanceof Error) {
+        if (
+          error.message.includes("API_KEY") ||
+          error.message.includes("Missing required")
+        ) {
+          return false;
+        }
+      }
+      return failureCount < 2;
+    },
   });
 }
