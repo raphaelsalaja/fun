@@ -19,7 +19,7 @@
     transition: all 150ms ease-in-out;
 
     &:hover {
-      opacity: 0.5;
+      background: var(--background-tertiary);
     }
 
     &:focus,

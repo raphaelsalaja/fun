@@ -32,7 +32,7 @@
   }
 
   &:hover {
-    background: var(--background-tertiary, var(--background-secondary));
+    background: var(--background-tertiary);
   }
 
   &:focus,
