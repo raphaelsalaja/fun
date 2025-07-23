@@ -39,17 +39,14 @@ export function useGetAssetsSimple() {
         throw new Error("NEXT_PUBLIC_FUNKIT_API_KEY is not defined");
       }
 
-      // Process tokens sequentially to avoid rate limiting
       const assets = [];
       for (const token of TOKENS) {
         try {
-          console.log(`Fetching ${token.symbol} on chain ${token.chainId}...`);
           const asset = await getAssetErc20ByChainAndSymbol({
             chainId: token.chainId,
             symbol: token.symbol,
             apiKey,
           });
-          console.log(`Successfully fetched ${token.symbol}:`, asset);
           assets.push(asset);
         } catch (error) {
           console.error(

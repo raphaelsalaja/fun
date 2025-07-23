@@ -15,18 +15,20 @@
 }
 
 .trigger {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  justify-content: space-around;
-  height: 32px;
-  padding: 8px 12px 8px 8px;
   cursor: pointer;
   background: var(--background-secondary);
   border-radius: 100px;
   box-shadow: 0 0 0 8px var(--background-primary);
   transition: all 150ms ease-in-out;
 
+  .content {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-around;
+    height: 32px;
+    padding: 8px 12px 8px 8px;
+  }
   &:hover {
     background: var(--background-tertiary, var(--background-secondary));
   }
@@ -199,5 +201,37 @@
         letter-spacing: -0.09px;
       }
     }
+  }
+}
+
+.loading {
+  opacity: 0.2;
+  animation: loading 1s infinite;
+  animation-timing-function: ease-in-out;
+
+  &[data-variant="label"] {
+    width: 40px;
+    height: 13px;
+    background: var(--text-quaternary);
+    border-radius: 100px;
+  }
+
+  &[data-variant="icon"] {
+    display: block;
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    background: var(--text-quaternary);
+    border-radius: 50%;
+  }
+}
+
+@keyframes loading {
+  0%,
+  100% {
+    filter: opacity(0.2);
+  }
+  50% {
+    filter: opacity(0.4);
   }
 }
