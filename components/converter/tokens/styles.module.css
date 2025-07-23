@@ -27,7 +27,7 @@
     gap: 6px;
     align-items: center;
     justify-content: space-around;
-    height: 32px;
+    height: 36px;
     padding: 8px 12px 8px 8px;
   }
 
@@ -39,14 +39,6 @@
   &:focus-visible {
     outline: 2px solid var(--background-tertiary);
     outline-offset: 2px;
-  }
-
-  .icon {
-    width: 20px;
-    height: 20px;
-    color: var(--text-primary);
-    background: var(--background-secondary);
-    border-radius: 50%;
   }
 
   .fallback {
@@ -61,16 +53,47 @@
   }
 
   .label {
-    display: flex;
-    width: 100%;
-    font-family: Inter, sans-serif;
     font-size: 14px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
-    color: var(--text-tertiary);
-    letter-spacing: -0.04px;
-    white-space: nowrap;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .chain {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text-secondary);
+  }
+
+  .icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+
+    .token {
+      position: absolute;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      aspect-ratio: 1 / 1;
+      mask: radial-gradient(
+        circle 8px at 20px 20px,
+        transparent 99%,
+        white 100%
+      );
+    }
+
+    .network {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      aspect-ratio: 1 / 1;
+      border-radius: 1000px;
+    }
   }
 }
 
@@ -152,8 +175,8 @@
   gap: 2px;
   align-items: flex-start;
   align-self: stretch;
-  max-height: 400px;
   overflow-y: auto;
+  scrollbar-width: none;
 
   .empty {
     display: flex;
@@ -173,7 +196,7 @@
     align-self: stretch;
     justify-content: space-between;
     width: 100%;
-    height: 48px;
+    min-height: 48px;
     padding: 0px 12px;
     cursor: pointer;
     background: transparent;
@@ -196,33 +219,64 @@
 
     .info {
       display: flex;
-      gap: 8px;
+      flex: 1;
+      gap: 12px;
+      align-items: center;
 
       .icon {
         position: relative;
+        width: 24px;
+        height: 24px;
+
+        .token {
+          position: absolute;
+          flex-shrink: 0;
+          width: 24px;
+          height: 24px;
+          aspect-ratio: 1 / 1;
+          mask: radial-gradient(
+            circle 8px at 20px 20px,
+            transparent 99%,
+            white 100%
+          );
+        }
+
+        .network {
+          position: absolute;
+          right: -2px;
+          bottom: -2px;
+          flex-shrink: 0;
+          width: 12px;
+          height: 12px;
+          aspect-ratio: 1 / 1;
+          border-radius: 1000px;
+        }
+      }
+
+      .details {
         display: flex;
-        gap: 10px;
-        align-items: center;
-        width: 20px;
-        height: 20px;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
       }
 
       .name {
         font-size: 14px;
-        font-style: normal;
         font-weight: 500;
-        line-height: 150%; /* 21px */
+        line-height: 1.2;
         color: var(--text-primary);
-        letter-spacing: -0.09px;
       }
 
       .symbol {
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 450;
-        line-height: 150%; /* 21px */
-        color: var(--text-quaternary);
-        letter-spacing: -0.09px;
+        font-weight: 500;
+      }
+
+      .separator {
+        color: var(--text-tertiary);
+      }
+
+      .chainname {
+        font-weight: 400;
       }
     }
   }

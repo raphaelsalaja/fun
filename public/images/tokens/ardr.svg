@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="1500 0 500 500" style="enable-background:new 1500 0 500 500;" xml:space="preserve">
-<path style="fill:#1562A1;" d="M1748.027,30.527L1500,463.805h123.667L1812,140.777L1748.027,30.527z"/>
-<path style="fill:#0C426C;" d="M1632.473,465.473l164.75-95.918l-63.333-78.387L1632.473,465.473"/>
-<path style="fill:#3C87C7;" d="M1855.777,219.195L1737,283.945l148.777,181.417H2000L1855.777,219.195"/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_425)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#3C87C7" style="fill:#3C87C7;fill:color(display-p3 0.2353 0.5294 0.7804);fill-opacity:1;"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M109.196 118.181L121.358 134.076L85.9375 158.125L109.196 118.181ZM110 41.25L128.748 72.0087L78.7531 158.125H41.25L110 41.25ZM110 108.914L134.997 90.4613L178.75 158.125H147.503L110 108.914Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_425">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

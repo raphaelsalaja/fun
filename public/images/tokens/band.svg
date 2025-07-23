@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="band" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#4520E7;}
-</style>
-<path id="Logo1" class="st0" d="M421.5,159.2c0-35.4-17.1-66.7-43.4-85.9l70.9-72l-42.4,0.2l-56.4,57.2c-10.5-3.6-21.6-5.5-33.2-5.5
-	h-194V332L356.6,95c21,13.4,35.1,37.2,35.1,64.2c0,41.7-33.5,75.7-74.6,75.7h-6.2L51,498.8h42.2l51-51.7H317
-	c57.6,0,104.4-47.6,104.4-106c0-38.6-20.4-72.3-50.8-90.8C401,231.5,421.5,197.7,421.5,159.2z M152.9,258.9V83.4H317
-	c2.8,0,5.6,0.2,8.3,0.5L152.9,258.9z M391.7,340.8c0,41.7-33.5,75.7-74.6,75.7H174l148.7-150.9C361.1,268.7,391.7,301.1,391.7,340.8
-	z"/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_52)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#516AFF" style="fill:#516AFF;fill:color(display-p3 0.3176 0.4157 1.0000);fill-opacity:1;"/>
+<path d="M125.716 85.7931L140.841 94.435V51.2187L110.591 36.0938L63.5938 62.5625V156.551L110.591 183.562L157.046 156.014V109.56L112.207 82.5481L97.0819 90.1106L141.921 116.579L142.457 148.452L110.591 166.279L78.1756 147.909V70.125L110.591 52.2981L125.716 60.4037V85.7931Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path d="M108.968 111.72L119.233 106.316L130.577 113.342L97.0815 132.248V93.3564L108.968 100.376" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_52">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

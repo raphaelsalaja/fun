@@ -1,17 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="ETC" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#3AB83A;}
-	.st1{fill:#0B8311;}
-	.st2{fill:#146714;}
-</style>
-<path id="path1599" class="st0" d="M95.7,272.3c54.4,28.9,111.1,59.1,155,82.5l153.7-82.5C348.7,355,302.3,423.8,250.6,500
-	C198.9,424,141.7,340.1,95.7,272.3z M101.6,249.5l149.2-79.6l147.3,79.1l-147.2,79.7L101.6,249.5z M250.6,144.3l-155,81.6L250,0
-	l154.4,226.4L250.6,144.3L250.6,144.3z"/>
-<path id="path1593" class="st1" d="M250.6,354.8l153.7-82.5C348.7,355,250.6,500,250.6,500V354.8z M250.8,169.8l147.3,79.1
-	l-147.2,79.7L250.8,169.8L250.8,169.8z M250.6,144.3L250,0l154.4,226.4L250.6,144.3z"/>
-<path id="path1603" class="st1" d="M101.6,249.5l149.2,12.2L398.1,249l-147.2,79.7L101.6,249.5z"/>
-<path id="path1606" class="st2" d="M250.8,261.7L398.1,249l-147.2,79.7L250.8,261.7L250.8,261.7z"/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_166)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#328332" style="fill:#328332;fill:color(display-p3 0.1961 0.5137 0.1961);fill-opacity:1;"/>
+<path d="M109.924 113.802L63.7175 109.835L109.917 83.6962V113.802H109.924ZM109.924 144.464V192.177C93.8575 167.166 76.1475 139.638 61.875 117.356C78.7188 126.844 96.305 136.764 109.924 144.471V144.464ZM109.924 75.2469L61.875 102.059L109.924 27.5V75.2469Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path d="M156.131 109.835L109.925 113.802V83.6962L156.125 109.835H156.131ZM109.925 144.471C123.537 136.771 141.116 126.844 157.967 117.356C143.695 139.645 125.985 167.173 109.925 192.17V144.471ZM109.925 75.2469V27.5L157.967 102.059L109.925 75.2469Z" fill="white" fill-opacity="0.601" style="fill:white;fill-opacity:0.601;"/>
+<path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M109.925 113.802L156.125 109.835L109.925 135.789V113.802Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.603" fill-rule="evenodd" clip-rule="evenodd" d="M109.917 113.802L63.7104 109.835L109.917 135.789V113.802Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_166">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

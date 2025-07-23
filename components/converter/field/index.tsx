@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from "react";
 import CurrencyInput, {
   type CurrencyInputProps,
 } from "react-currency-input-field";
@@ -6,6 +7,35 @@ import styles from "./styles.module.css";
 
 export function Field({ ...props }: CurrencyInputProps) {
   const { amount, setAmount } = useConverter();
+  const [localValue, setLocalValue] = useState<string>("");
+
+  // Update local value when amount changes from outside
+  useEffect(() => {
+    if (amount !== undefined) {
+      setLocalValue(amount.toString());
+    }
+  }, [amount]);
+
+  // Debounced update to global state
+  useEffect(() => {
+    if (localValue === "") {
+      setAmount(0);
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      const numericValue = Number(localValue) || 0;
+      if (numericValue !== amount) {
+        setAmount(numericValue);
+      }
+    }, 1000); // 1 second debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [localValue, setAmount, amount]);
+
+  const handleValueChange = useCallback((value: string | undefined) => {
+    setLocalValue(value || "");
+  }, []);
 
   return (
     <div className={styles.field}>
@@ -15,8 +45,8 @@ export function Field({ ...props }: CurrencyInputProps) {
         prefix="$"
         decimalsLimit={2}
         className={styles.input}
-        value={amount || ""}
-        onValueChange={(value) => setAmount(Number(value) || 0)}
+        value={localValue}
+        onValueChange={handleValueChange}
       />
     </div>
   );

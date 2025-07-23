@@ -1,20 +1,11 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="svg5145" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="53.5 -1000 2500 2500" style="enable-background:new 53.5 -1000 2500 2500;" xml:space="preserve">
-<g id="layer1">
-	<g id="g5748">
-		<path id="rect5704" style="fill:#1B75BC;" d="M564.074-224.449l277.444-273.463L2042.704,720.761l-277.444,273.463
-			L564.074-224.449z"/>
-		<path id="rect5708" style="fill:#1B75BC;" d="M557.567,710.03L1776.24-491.157l273.463,277.444L831.03,987.474L557.567,710.03z"/>
-		<path id="rect5710" style="fill:#3C3C3B;" d="M860.328,1013.309l227.944-224.674l431.54,437.821l-227.944,224.674
-			L860.328,1013.309z"/>
-		<path id="rect5712" style="fill:#3C3C3B;" d="M1067.43,1223.274l437.821-431.539l224.674,227.944l-437.821,431.539
-			L1067.43,1223.274z"/>
-		<path id="rect5714" style="fill:#3C3C3B;" d="M1092.88-726.361l227.944-224.674l431.539,437.821L1524.42-288.54L1092.88-726.361z"
-			/>
-		<path id="rect5716" style="fill:#3C3C3B;" d="M883.015-519.828l437.821-431.539l224.674,227.944l-437.821,431.539L883.015-519.828
-			z"/>
-	</g>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_25)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#1B75BC" style="fill:#1B75BC;fill:color(display-p3 0.1059 0.4588 0.7373);fill-opacity:1;"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M79.6606 59.1388L110 90.805L139.597 59.1388L158.125 78.1L127.903 110L158.125 141.646L139.597 160.848L110 129.195L79.6606 160.848L61.875 142.175L91.85 109.821L61.875 78.1L79.6606 59.1456V59.1388ZM82.1013 56.5537L109.876 27.5L137.651 56.5537L123.035 72.1256L109.876 57.5919L96.7175 72.1256L82.1013 56.5537ZM82.1013 163.446L96.7175 147.874L109.876 162.408L123.035 147.874L137.651 163.446L109.876 192.5L82.1013 163.446Z" fill="white" style="fill:white;fill-opacity:1;"/>
 </g>
+<defs>
+<clipPath id="clip0_108_25">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

@@ -2,7 +2,18 @@
 
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import React from "react";
-import { useGetAssetPriceInfo, useGetAssetsSimple } from "@/hooks/fun";
+import { useGetAssetPriceInfo } from "@/hooks/fun";
+import { type Token, useTokenList } from "@/hooks/tokens";
+
+function tokenToAssetInfo(token: Token): Erc20AssetInfo {
+  return {
+    chain: token.chainId.toString(),
+    address: token.address as `0x${string}`,
+    name: token.name,
+    symbol: token.symbol,
+    decimals: token.decimals,
+  };
+}
 
 export interface PriceInfo {
   unitPrice: number;
@@ -39,10 +50,18 @@ interface ConverterProviderProps {
 
 export function ConverterProvider({ children }: ConverterProviderProps) {
   const {
-    data: assets,
-    error: assetsError,
-    isLoading: assetsLoading,
-  } = useGetAssetsSimple();
+    data: tokenList,
+    error: tokenListError,
+    isLoading: tokenListLoading,
+  } = useTokenList();
+
+  const assets = React.useMemo(() => {
+    if (!tokenList) return undefined;
+    return tokenList.map(tokenToAssetInfo);
+  }, [tokenList]);
+
+  const assetsError = tokenListError;
+  const assetsLoading = tokenListLoading;
 
   const [sourceToken, setSourceToken] = React.useState<
     Erc20AssetInfo | undefined

@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<polygon id="XMLID_1_" style="fill:#C4A9D4;" points="374.209,35.716 497.385,250.176 374.209,465.163 347.977,420.683 
-	447.202,250.44 347.977,75.677 151.239,75.677 125.007,35.716 "/>
-<polygon id="XMLID_2_" style="fill:#AE9ACD;" points="125.007,35.716 2.261,250.44 125.007,465.163 374.209,465.163 
-	347.977,420.683 151.649,420.683 53.857,250.44 151.239,75.677 "/>
-<polygon id="XMLID_3_" style="fill:#C4A9D4;" points="157.037,156.73 340.822,156.73 340.822,339.772 303.792,302.743 
-	303.792,195.865 267.506,195.865 267.506,267.2 230.105,231.78 230.105,195.37 157.037,195.37 "/>
-<polygon id="XMLID_4_" style="fill:#AE9ACD;" points="230.105,231.78 157.037,231.78 157.037,267.447 267.506,267.447 "/>
-<polygon id="XMLID_5_" style="fill:#AE9ACD;" points="303.792,302.743 157.037,302.743 157.037,339.772 340.822,339.772 "/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_156)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#B49FFC" style="fill:#B49FFC;fill:color(display-p3 0.7059 0.6235 0.9882);fill-opacity:1;"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M55 55V77H99V99H55V121H121V77H143V143H55V165H165V55H55Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_156">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

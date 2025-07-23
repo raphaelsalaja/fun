@@ -5,6 +5,7 @@ import {
   getAssetPriceInfo,
 } from "@funkit/api-base";
 import { useQuery } from "@tanstack/react-query";
+import { useTokenList } from "@/hooks/tokens";
 import { TOKENS } from "@/lib/tokens";
 
 interface ApiError {
@@ -88,6 +89,60 @@ export function useGetAssetsSimple() {
 
       return assets;
     },
+    staleTime: 5 * 60_000,
+    retry: 2,
+  });
+}
+
+export function useGetAssets() {
+  const {
+    data: tokenList,
+    isLoading: isTokenListLoading,
+    error: tokenListError,
+  } = useTokenList();
+
+  return useQuery({
+    queryKey: ["assetsFromTokenList"],
+    queryFn: async () => {
+      const apiKey = process.env.NEXT_PUBLIC_FUNKIT_API_KEY;
+
+      if (!apiKey) {
+        throw new Error("NEXT_PUBLIC_FUNKIT_API_KEY is not defined");
+      }
+
+      if (!tokenList) {
+        throw new Error("Token list not available");
+      }
+
+      const assets = [];
+      const errors: string[] = [];
+
+      for (const token of tokenList) {
+        try {
+          const asset = await getAssetErc20ByChainAndSymbol({
+            chainId: token.chainId.toString(),
+            symbol: token.symbol,
+            apiKey,
+          });
+          assets.push(asset);
+        } catch (error) {
+          const errorMessage = `Failed to fetch ${token.symbol} on chain ${token.chainId}`;
+          console.error(errorMessage, error);
+          errors.push(errorMessage);
+        }
+      }
+
+      if (assets.length === 0) {
+        throw new Error("Failed to fetch any token data");
+      }
+
+      if (errors.length > 0) {
+        console.warn("Partial failures in token fetching:", errors);
+      }
+
+      return assets;
+    },
+    enabled: Boolean(tokenList && !isTokenListLoading && !tokenListError),
     staleTime: 5 * 60_000,
     retry: 2,
   });

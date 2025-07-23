@@ -1,28 +1,33 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<polygon style="fill:#32DFC5;" points="299.359,129.091 200.641,74.052 299.359,19.012 "/>
-<polygon style="fill:#67E9D1;" points="188.726,174.024 90.009,118.985 188.726,63.946 "/>
-<polygon style="fill:#0BDBB5;" points="173.096,277.678 74.379,222.638 173.096,167.599 "/>
-<polygon style="fill:#72EBD6;" points="101.924,375.572 3.207,320.533 101.924,265.494 "/>
-<polygon style="fill:#99EFE9;" points="279.615,452.078 180.898,397.039 279.615,342 "/>
-<polygon style="fill:#1DD7D6;" points="496.793,349.248 398.076,294.208 496.793,239.169 "/>
-<polygon style="fill:#00D4CD;" points="496.793,239.169 398.076,184.13 496.793,129.091 "/>
-<polygon style="fill:#00D6C2;" points="398.076,184.13 299.359,129.091 398.076,74.052 "/>
-<polygon style="fill:#67E7DC;" points="299.359,349.248 200.641,294.208 299.359,239.169 "/>
-<polygon style="fill:#6AE6D9;" points="287.443,231.987 188.726,176.947 287.443,121.908 "/>
-<polygon style="fill:#99F1DD;" points="52.565,124.478 151.283,179.518 52.565,234.557 "/>
-<polygon style="fill:#99F1DD;" points="101.924,237.935 200.641,292.975 101.924,348.014 "/>
-<polygon style="fill:#0BDABB;" points="188.726,108.447 287.443,163.486 188.726,218.525 "/>
-<polygon style="fill:#1BDAC7;" points="167.337,320.533 266.055,375.572 167.337,430.612 "/>
-<polygon style="fill:#4DE3DE;" points="301.428,369.892 400.146,424.931 301.428,479.97 "/>
-<polygon style="fill:#00D3D3;" points="398.076,294.208 496.793,349.248 398.076,404.287 "/>
-<polygon style="fill:#34DED6;" points="398.076,184.13 496.793,239.169 398.076,294.208 "/>
-<polygon style="fill:#19DACD;" points="398.076,74.052 496.793,129.091 398.076,184.13 "/>
-<polygon style="fill:#34DFD0;" points="299.359,129.091 398.076,184.13 299.359,239.169 "/>
-<polygon style="fill:#00D7BC;" points="299.359,19.012 398.076,74.052 299.359,129.091 "/>
-<polygon style="fill:#34DFD3;" points="299.359,239.169 398.076,294.209 299.359,349.248 "/>
-<polygon style="fill:#0DD8CB;" points="398.076,294.209 299.359,239.169 398.076,184.13 "/>
-<polygon style="fill:#4BE2DC;" points="398.076,404.287 299.359,349.248 398.076,294.208 "/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_225)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#00D4D5" style="fill:#00D4D5;fill:color(display-p3 0.0000 0.8314 0.8353);fill-opacity:1;"/>
+<path d="M113.568 34.375V71.8919L146.142 53.1575L113.568 34.375Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.9" d="M146.142 53.1572V90.6741L178.708 71.8916L146.142 53.1572Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.8" d="M113.568 71.8921V109.409L146.142 90.6746L113.568 71.8921ZM146.142 90.6815V128.191L178.709 109.409L146.142 90.6815Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.8" d="M113.568 109.409V146.926L146.142 128.192L113.568 109.409Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path d="M146.142 128.191V165.708L178.708 146.926L146.142 128.191Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.4" d="M29.3765 70.6265V108.143L61.9502 89.3608L29.3765 70.6265Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.2" d="M70.4688 84.5747V122.092L102.987 103.357L70.4688 84.5747Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.3" d="M46.3237 108.301V145.818L78.8906 127.036L46.3237 108.301Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.9" d="M67.7876 136.614V174.131L100.306 155.348L67.7876 136.614Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.7" d="M113.3 152.764V190.287L145.819 171.498L113.3 152.764Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.9" d="M75.8926 66.0479V103.572L108.411 84.8372L75.8926 66.0479Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.8" d="M113.568 34.375V71.8919L80.9946 53.1575L113.568 34.375Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.6" d="M75.8936 50.3237V87.8337L43.313 69.0512L75.8936 50.3237Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.6" d="M108.466 68.8877V106.411L75.8926 87.6221L108.466 68.8877Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.95" d="M70.3174 84.5747V122.092L37.7437 103.357L70.3174 84.5747Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.6" d="M113.568 109.409V146.926L81.0488 128.192L113.568 109.409Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.55" d="M46.3237 118.147V155.664L13.75 136.875L46.3237 118.147Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path d="M178.708 71.8921V109.409L146.142 90.6746L178.708 71.8921Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.95" d="M146.142 90.6807V128.191L113.568 109.408L146.142 90.6807Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.9" d="M178.708 109.409V146.926L146.142 128.192L178.708 109.409Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.7" d="M146.142 128.191V165.708L113.568 146.926L146.142 128.191Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path opacity="0.4" d="M106.356 143.825V181.342L73.7896 162.607L106.356 143.825Z" fill="white" style="fill:white;fill-opacity:1;"/>
+<path d="M146.142 53.1572V90.6741L113.568 71.8916L146.142 53.1572Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_225">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

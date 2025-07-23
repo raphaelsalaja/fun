@@ -1,18 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="DAI" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:url(#SVGID_1_);}
-	.st1{fill:#FFFFFF;}
-</style>
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="73.2233" y1="73.2233" x2="426.7767" y2="426.7767">
-	<stop  offset="0" style="stop-color:#F9AF1A"/>
-	<stop  offset="1" style="stop-color:#FBC349"/>
-</linearGradient>
-<circle class="st0" cx="250" cy="250" r="250"/>
-<path class="st1" d="M398.7,209.2H369c-16.6-45-59.8-77.1-110.6-77.1H155.3v77.1h-32.8v27h32.8v28.9h-32.8v27h32.8v75.8h103.1
-	c50.3,0,93.2-31.5,110.1-75.8h30.2v-27h-23.4c0.6-4.9,1-10,1-15.1v0c0-4.7-0.3-9.3-0.8-13.8h23.3V209.2z M182.3,157.9h75
-	c35.9,0,66.8,21,81.3,51.3H182.3V157.9z M257.3,342.1h-75v-50H338C323.3,321.7,292.7,342.1,257.3,342.1z M347.4,248v4.1
-	c0,4.4-0.3,8.8-0.9,13H182.3v-28.9h164.3C347.1,240.1,347.4,244,347.4,248z"/>
+<svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_108_124)">
+<path d="M110 220C170.751 220 220 170.751 220 110C220 49.2487 170.751 0 110 0C49.2487 0 0 49.2487 0 110C0 170.751 49.2487 220 110 220Z" fill="#F4B731" style="fill:#F4B731;fill:color(display-p3 0.9569 0.7176 0.1922);fill-opacity:1;"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M63.7794 55H108.824C136.221 55 156.991 69.5475 164.718 90.7088H178.75V103.503H167.674C167.887 105.524 167.998 107.587 167.998 109.677V109.993C167.998 112.344 167.86 114.668 167.585 116.937H178.75V129.724H164.45C156.523 150.597 135.919 165 108.831 165H63.7794V129.724H48.125V116.937H63.7794V103.503H48.125V90.7156H63.7794V55ZM76.3675 129.724V153.526H108.818C128.851 153.526 143.729 143.99 150.652 129.724H76.3675ZM154.509 116.937H76.3675V103.503H154.536C154.818 105.614 154.969 107.779 154.969 109.993V110.303C154.969 112.564 154.811 114.771 154.509 116.93V116.937ZM108.831 66.4469C128.948 66.4469 143.873 76.2369 150.755 90.7019H76.3675V66.4538H108.818L108.831 66.4469Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+<defs>
+<clipPath id="clip0_108_124">
+<rect width="220" height="220" fill="white" style="fill:white;fill-opacity:1;"/>
+</clipPath>
+</defs>
 </svg>

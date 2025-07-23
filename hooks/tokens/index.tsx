@@ -12,6 +12,38 @@ export interface Token {
 
 const LIST_URL = "https://tokens.uniswap.org";
 
+const POPULAR_TOKENS = [
+  "ETH",
+  "WETH",
+  "USDC",
+  "USDT",
+  "DAI",
+  "WBTC",
+  "UNI",
+  "LINK",
+  "AAVE",
+  "COMP",
+  "MKR",
+  "SNX",
+  "CRV",
+  "BAL",
+  "YFI",
+  "SUSHI",
+  "1INCH",
+  "ENS",
+  "LDO",
+  "OP",
+  "MATIC",
+  "BNB",
+  "ADA",
+  "DOT",
+  "AVAX",
+  "SOL",
+  "ATOM",
+  "FTM",
+  "NEAR",
+];
+
 export function useTokenList() {
   return useQuery<Token[], Error>({
     queryKey: ["tokenList"],
@@ -24,7 +56,11 @@ export function useTokenList() {
 
       const body = (await res.json()) as { tokens: Token[] };
 
-      return body.tokens;
+      const popularTokens = body.tokens.filter((token) =>
+        POPULAR_TOKENS.includes(token.symbol.toUpperCase()),
+      );
+
+      return popularTokens;
     },
     gcTime: 30 * 60 * 1000,
     staleTime: 5 * 60 * 1000,
