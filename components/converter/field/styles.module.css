@@ -16,5 +16,9 @@
       color: var(--text-quaternary);
       opacity: 0.5;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 }

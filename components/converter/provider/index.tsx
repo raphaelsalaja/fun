@@ -155,7 +155,6 @@ export function ConverterProvider({ children }: ConverterProviderProps) {
     setTargetAmount(tempAmount);
   }, [sourceToken, targetToken, sourceAmount, targetAmount]);
 
-  // Recalculate token amounts when prices change, but preserve USD amount
   React.useEffect(() => {
     if (sourcePrice?.unitPrice && targetPrice?.unitPrice && amount > 0) {
       const newSourceAmount = amount / sourcePrice.unitPrice;
