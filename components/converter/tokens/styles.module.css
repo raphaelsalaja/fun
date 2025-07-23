@@ -16,6 +16,7 @@
 
 .trigger {
   cursor: pointer;
+  outline: 2px solid transparent;
   background: var(--background-secondary);
   border-radius: 100px;
   box-shadow: 0 0 0 8px var(--background-primary);
@@ -29,12 +30,14 @@
     height: 32px;
     padding: 8px 12px 8px 8px;
   }
+
   &:hover {
     background: var(--background-tertiary, var(--background-secondary));
   }
 
+  &:focus,
   &:focus-visible {
-    outline: 2px solid var(--text-primary);
+    outline: 2px solid var(--background-tertiary);
     outline-offset: 2px;
   }
 

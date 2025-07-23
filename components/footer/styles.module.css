@@ -6,12 +6,20 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-radius: 8px;
   transform: translateX(-50%);
+  transition: all 150ms ease-in-out;
+
+  &:focus,
+  &:focus-visible {
+    outline: 2px solid var(--background-tertiary);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
 
   &::before {
     position: absolute;
     inset: -4px;
-
     content: "";
     background: var(--background-secondary);
     border-radius: 8px;
