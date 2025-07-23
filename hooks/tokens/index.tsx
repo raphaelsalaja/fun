@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import tokenList from "@uniswap/default-token-list";
 
 export interface Token {
   chainId: number;
@@ -7,60 +8,36 @@ export interface Token {
   symbol: string;
   decimals: number;
   logoURI?: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }
 
-const LIST_URL = "https://tokens.uniswap.org";
-
-const POPULAR_TOKENS = [
-  "ETH",
-  "WETH",
-  "USDC",
-  "USDT",
-  "DAI",
-  "WBTC",
-  "UNI",
-  "LINK",
-  "AAVE",
-  "COMP",
-  "MKR",
-  "SNX",
-  "CRV",
-  "BAL",
-  "YFI",
-  "SUSHI",
-  "1INCH",
-  "ENS",
-  "LDO",
-  "OP",
-  "MATIC",
-  "BNB",
-  "ADA",
-  "DOT",
-  "AVAX",
-  "SOL",
-  "ATOM",
-  "FTM",
-  "NEAR",
-];
+export interface Network {
+  chainId: number;
+  tokens: Token[];
+}
 
 export function useTokenList() {
-  return useQuery<Token[], Error>({
+  return useQuery<Network[], Error>({
     queryKey: ["tokenList"],
     queryFn: async () => {
-      const res = await fetch(LIST_URL);
+      const list = tokenList.tokens;
 
-      if (!res.ok) {
-        throw new Error(`Failed to fetch token list: ${res.statusText}`);
-      }
+      const groupedTokens: Record<number, Token[]> = {};
+      list.forEach((token) => {
+        if (!groupedTokens[token.chainId]) {
+          groupedTokens[token.chainId] = [];
+        }
+        groupedTokens[token.chainId].push(token);
+      });
 
-      const body = (await res.json()) as { tokens: Token[] };
-
-      const popularTokens = body.tokens.filter((token) =>
-        POPULAR_TOKENS.includes(token.symbol.toUpperCase()),
+      const networks: Network[] = Object.entries(groupedTokens).map(
+        ([chainId, tokens]) => ({
+          chainId: parseInt(chainId, 10),
+          tokens,
+        }),
       );
 
-      return popularTokens;
+      return networks;
     },
     gcTime: 30 * 60 * 1000,
     staleTime: 5 * 60 * 1000,

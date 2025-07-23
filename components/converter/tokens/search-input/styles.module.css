@@ -1,0 +1,34 @@
+.search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  align-self: stretch;
+  padding: 12px;
+  background: var(--background-secondary);
+  border-radius: 12px;
+
+  .icon {
+    color: var(--text-quaternary);
+  }
+
+  .input {
+    flex: 1;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    color: var(--text-quaternary);
+    letter-spacing: -0.18px;
+    outline: none;
+    background: transparent;
+    border: none;
+
+    &::placeholder {
+      opacity: 0.5;
+    }
+
+    &:focus {
+      color: var(--text-primary);
+    }
+  }
+}

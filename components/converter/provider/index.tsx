@@ -50,15 +50,17 @@ interface ConverterProviderProps {
 
 export function ConverterProvider({ children }: ConverterProviderProps) {
   const {
-    data: tokenList,
+    data: networks,
     error: tokenListError,
     isLoading: tokenListLoading,
   } = useTokenList();
 
   const assets = React.useMemo(() => {
-    if (!tokenList) return undefined;
-    return tokenList.map(tokenToAssetInfo);
-  }, [tokenList]);
+    if (!networks) return undefined;
+    // Flatten all tokens from all networks into a single array
+    const allTokens = networks.flatMap((network) => network.tokens);
+    return allTokens.map(tokenToAssetInfo);
+  }, [networks]);
 
   const assetsError = tokenListError;
   const assetsLoading = tokenListLoading;

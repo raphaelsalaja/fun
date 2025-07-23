@@ -1,13 +1,17 @@
 import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Check, Search } from "@/components/icons";
-import { blur, loading, SPRING_CONFIG, scale } from "@/lib/animations";
-import { getChainIcon, getNetworkName } from "@/lib/networks";
+import { memo, useCallback, useMemo, useState } from "react";
+import { blur, loading, SPRING_CONFIG } from "@/lib/animations";
+import { getChainIcon, getNetworkName } from "@/lib/tokens";
+import { getChainLogo } from "@/lib/uniswap";
 import { useConverter } from "../provider";
+import { DialogHeader } from "./dialog-header";
+import { type NetworkInfo, NetworkList } from "./network-list";
+import { type DialogStep, SearchInput } from "./search-input";
 import styles from "./styles.module.css";
+import { TokenImage } from "./token-image";
+import { TokenList } from "./token-list";
 
 interface TokenSelectorProps {
   token: Erc20AssetInfo | undefined;
@@ -16,82 +20,119 @@ interface TokenSelectorProps {
   label: string;
 }
 
-const TokenImage = memo<{
-  symbol: string;
-  chain: string | undefined;
-  alt: string;
-  className?: string;
-  width: number;
-  height: number;
-}>(({ symbol, chain, alt, width, height }) => {
-  return (
-    <motion.div {...scale} layout="position" className={styles.icon}>
-      <Image
-        width={width}
-        height={height}
-        className={styles.token}
-        alt={alt}
-        src={`/images/tokens/${symbol}.svg`}
-      />
-      {chain && (
-        <Image
-          width={width}
-          height={height}
-          className={styles.network}
-          alt={alt}
-          src={`/images/tokens/${getChainIcon(Number(chain))}.svg`}
-        />
-      )}
-    </motion.div>
-  );
-});
-
-TokenImage.displayName = "TokenImage";
-
 const TokenSelector = memo<TokenSelectorProps>(
   ({ token, onTokenSelect, position, label }) => {
     const { assets, isAssetsLoading } = useConverter();
 
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-
-    const handleSearchChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-      },
-      [],
+    const [step, setStep] = useState<DialogStep>("network");
+    const [selectedNetwork, setSelectedNetwork] = useState<NetworkInfo | null>(
+      null,
     );
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Escape") {
-          setOpen(false);
-          setSearchQuery("");
+          if (step === "token" && selectedNetwork) {
+            setStep("network");
+            setSelectedNetwork(null);
+            setSearchQuery("");
+          } else {
+            setOpen(false);
+            setSearchQuery("");
+            setStep("network");
+            setSelectedNetwork(null);
+          }
         }
       },
-      [],
+      [step, selectedNetwork],
     );
 
-    const filteredTokens = useMemo(() => {
-      if (!assets || !searchQuery.trim()) return assets;
+    // Get unique networks from assets
+    const availableNetworks = useMemo(() => {
+      if (!assets) return [];
+
+      const networkMap = new Map<number, NetworkInfo>();
+
+      assets.forEach((asset) => {
+        const chainId = Number(asset.chain);
+        if (!networkMap.has(chainId)) {
+          networkMap.set(chainId, {
+            chainId,
+            name: getNetworkName(chainId),
+            icon: getChainLogo(getNetworkName(chainId)),
+          });
+        }
+      });
+
+      return Array.from(networkMap.values()).sort((a, b) =>
+        a.name.localeCompare(b.name),
+      );
+    }, [assets]);
+
+    // Filter networks by search query
+    const filteredNetworks = useMemo(() => {
+      if (!searchQuery.trim()) return availableNetworks;
 
       const query = searchQuery.toLowerCase();
+      return availableNetworks.filter((network) =>
+        network.name.toLowerCase().includes(query),
+      );
+    }, [availableNetworks, searchQuery]);
+
+    // Get tokens for selected network
+    const networkTokens = useMemo(() => {
+      if (!assets || !selectedNetwork) return [];
+
       return assets.filter(
+        (asset) => Number(asset.chain) === selectedNetwork.chainId,
+      );
+    }, [assets, selectedNetwork]);
+
+    // Filter tokens by search query
+    const filteredTokens = useMemo(() => {
+      if (!searchQuery.trim()) return networkTokens;
+
+      const query = searchQuery.toLowerCase();
+      return networkTokens.filter(
         (asset: Erc20AssetInfo) =>
           asset.name?.toLowerCase().includes(query) ||
-          asset.symbol?.toLowerCase().includes(query) ||
-          getNetworkName(Number(asset.chain)).toLowerCase().includes(query),
+          asset.symbol?.toLowerCase().includes(query),
       );
-    }, [assets, searchQuery]);
+    }, [networkTokens, searchQuery]);
+
+    const handleNetworkSelect = useCallback((network: NetworkInfo) => {
+      setSelectedNetwork(network);
+      setStep("token");
+      setSearchQuery("");
+    }, []);
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
         onTokenSelect(selectedToken);
         setOpen(false);
         setSearchQuery("");
+        setStep("network");
+        setSelectedNetwork(null);
       },
       [onTokenSelect],
     );
+
+    const handleOpenChange = useCallback((newOpen: boolean) => {
+      setOpen(newOpen);
+      if (!newOpen) {
+        setSearchQuery("");
+        setStep("network");
+        setSelectedNetwork(null);
+      }
+    }, []);
+
+    const handleBack = useCallback(() => {
+      setStep("network");
+      setSelectedNetwork(null);
+      setSearchQuery("");
+    }, []);
 
     const tokenSymbol = token?.symbol || "";
     const isLoading = isAssetsLoading;
@@ -99,7 +140,7 @@ const TokenSelector = memo<TokenSelectorProps>(
     return (
       <div data-position={position} className={styles.dialog}>
         <motion.div layout transition={SPRING_CONFIG}>
-          <BaseDialog.Root open={open} onOpenChange={setOpen}>
+          <BaseDialog.Root open={open} onOpenChange={handleOpenChange}>
             <BaseDialog.Trigger
               className={styles.trigger}
               aria-label={`Select ${label} token`}
@@ -128,8 +169,8 @@ const TokenSelector = memo<TokenSelectorProps>(
                           key={tokenSymbol}
                           className={styles.icon}
                           alt={`${tokenSymbol} icon`}
-                          symbol={tokenSymbol}
-                          chain={token?.chain || undefined}
+                          address={token?.address || ""}
+                          chain={token?.chain || ""}
                         />
                       </AnimatePresence>
                     </div>
@@ -156,64 +197,33 @@ const TokenSelector = memo<TokenSelectorProps>(
                 role="dialog"
                 aria-label={`${label} token selector`}
               >
-                <div className={styles.search}>
-                  <Search className={styles.icon} />
-                  <input
-                    type="text"
-                    placeholder="Search tokens or chains..."
-                    className={styles.input}
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    onKeyDown={handleKeyDown}
-                    aria-label="Search tokens"
-                    autoComplete="off"
+                <SearchInput
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  onKeyDown={handleKeyDown}
+                  step={step}
+                />
+
+                {step === "network" && (
+                  <NetworkList
+                    networks={filteredNetworks}
+                    onNetworkSelect={handleNetworkSelect}
                   />
-                </div>
-                <div className={styles.list}>
-                  {filteredTokens?.length === 0 ? (
-                    <div className={styles.empty}>No Tokens Found</div>
-                  ) : (
-                    filteredTokens?.map((listToken: Erc20AssetInfo) => {
-                      const isSelected =
-                        token?.symbol === listToken.symbol &&
-                        token?.chain === listToken.chain;
+                )}
 
-                      return (
-                        <button
-                          key={`${listToken.symbol}-${listToken.chain}`}
-                          type="button"
-                          className={styles.item}
-                          onClick={() => handleTokenSelect(listToken)}
-                          data-selected={isSelected}
-                          aria-pressed={isSelected}
-                        >
-                          <div className={styles.info}>
-                            <TokenImage
-                              width={20}
-                              height={20}
-                              className={styles.icon}
-                              alt={`${listToken.symbol} icon`}
-                              symbol={listToken.symbol}
-                              chain={listToken.chain || undefined}
-                            />
-
-                            <div className={styles.details}>
-                              <div className={styles.name}>
-                                {listToken.name}
-                              </div>
-                            </div>
-                          </div>
-                          {isSelected && (
-                            <Check
-                              className={styles.check}
-                              aria-hidden="true"
-                            />
-                          )}
-                        </button>
-                      );
-                    })
-                  )}
-                </div>
+                {step === "token" && selectedNetwork && (
+                  <>
+                    <DialogHeader
+                      selectedNetwork={selectedNetwork}
+                      onBack={handleBack}
+                    />
+                    <TokenList
+                      tokens={filteredTokens}
+                      selectedToken={token}
+                      onTokenSelect={handleTokenSelect}
+                    />
+                  </>
+                )}
               </BaseDialog.Popup>
             </BaseDialog.Portal>
           </BaseDialog.Root>

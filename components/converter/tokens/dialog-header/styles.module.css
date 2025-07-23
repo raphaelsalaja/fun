@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+
+  .back {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    transition: all 150ms ease-in-out;
+
+    &:hover {
+      color: var(--text-primary);
+      background: var(--background-secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .networkinfo {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+
+    img {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+  }
+}
