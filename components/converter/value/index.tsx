@@ -7,8 +7,7 @@ const format: Format = {
   minimumIntegerDigits: 1,
   minimumFractionDigits: 2,
   maximumFractionDigits: 6,
-  useGrouping: "auto",
-  roundingPriority: "auto",
+  useGrouping: "false",
   trailingZeroDisplay: "auto",
 };
 
