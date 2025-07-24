@@ -1,6 +1,6 @@
 .footer {
   position: fixed;
-  bottom: 48px;
+  top: 48px;
   left: 50%;
   display: flex;
   align-items: center;
