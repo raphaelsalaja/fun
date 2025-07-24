@@ -1,3 +1,4 @@
+import { Toast } from "@base-ui-components/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CurrencyInput, {
   type CurrencyInputProps,
@@ -6,6 +7,7 @@ import { useConverter } from "../provider";
 import styles from "./styles.module.css";
 
 export function Field({ ...props }: CurrencyInputProps) {
+  const toastManager = Toast.useToastManager();
   const { amount, setAmount } = useConverter();
   const [localValue, setLocalValue] = useState<string>("");
   const [isUserTyping, setIsUserTyping] = useState(false);
@@ -32,7 +34,6 @@ export function Field({ ...props }: CurrencyInputProps) {
         clearTimeout(debounceRef.current);
       }
 
-      // If value is empty, set to empty string
       if (!newValue) {
         setLocalValue("");
         debounceRef.current = setTimeout(() => {
@@ -45,19 +46,23 @@ export function Field({ ...props }: CurrencyInputProps) {
 
       const numericValue = Number(newValue) || 0;
 
-      // If value exceeds max, don't update local value and clamp the amount
       if (numericValue > 999_999) {
-        debounceRef.current = setTimeout(() => {
-          const clampedValue = 999_999;
-          lastExternalUpdate.current = clampedValue;
-          setAmount(clampedValue);
-          setLocalValue(clampedValue.toString());
+        const existingToast = toastManager.toasts.find(
+          (toast) => toast.title === "Toast created",
+        );
+
+        if (existingToast) {
           setIsUserTyping(false);
-        }, 300);
+          return;
+        }
+
+        toastManager.add({
+          description: "Amount cannot exceed $999,999.",
+        });
+        setIsUserTyping(false);
         return;
       }
 
-      // Normal case - value is within limits
       setLocalValue(newValue);
       debounceRef.current = setTimeout(() => {
         const finalValue = Math.max(numericValue, 0);
@@ -68,7 +73,7 @@ export function Field({ ...props }: CurrencyInputProps) {
         setIsUserTyping(false);
       }, 300);
     },
-    [amount, setAmount],
+    [amount, setAmount, toastManager],
   );
 
   useEffect(() => {

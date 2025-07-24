@@ -1,0 +1,9 @@
+.viewport {
+  position: fixed;
+  top: auto;
+  right: 0;
+  bottom: 48px;
+  left: 0;
+  width: 100%;
+  margin: 0 auto;
+}

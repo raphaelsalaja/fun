@@ -1,5 +1,6 @@
 @import url(./reset.css);
 @import url(./theme.css);
+@import url(./springs.css);
 
 html {
   caret-color: black;

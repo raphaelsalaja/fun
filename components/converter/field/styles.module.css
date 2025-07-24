@@ -1,9 +1,11 @@
 .field {
   display: flex;
   width: 100%;
+  overflow: visible;
 
   .input {
     width: 100%;
+    overflow: visible;
     font-size: 64px;
     font-style: normal;
     font-weight: 600;
