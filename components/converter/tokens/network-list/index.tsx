@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { memo } from "react";
+import { NetworkImage } from "../token-image";
 import styles from "./styles.module.css";
 
 export interface NetworkInfo {
@@ -30,14 +30,13 @@ export const NetworkList = memo<NetworkListProps>(
             >
               <div className={styles.info}>
                 <div className={styles.icon}>
-                  <TokenImage
+                  <NetworkImage
                     width={16}
                     height={16}
-                    key={network}
+                    key={network.name}
                     className={styles.icon}
-                    alt={`${network} icon`}
-                    address={network?.address || ""}
-                    chain={network?.chain || ""}
+                    alt={`${network.name} icon`}
+                    chain={network.folder || ""}
                   />
                 </div>
                 <div className={styles.details}>

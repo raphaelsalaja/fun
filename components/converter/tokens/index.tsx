@@ -3,12 +3,12 @@ import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion } from "motion/react";
 import { memo, useCallback, useMemo, useState } from "react";
 import { blur, loading, SPRING_CONFIG } from "@/lib/animations";
-import { getChainIcon, getNetworkName } from "@/lib/tokens";
-import { getChainLogo } from "@/lib/uniswap";
+import { NETWORKS } from "@/lib/networks";
 import { useConverter } from "../provider";
 import { DialogHeader } from "./dialog-header";
+import { NetworksDialog } from "./dialogs/networks";
 import { type NetworkInfo, NetworkList } from "./network-list";
-import { type DialogStep, SearchInput } from "./search-input";
+import { SearchInput } from "./search-input";
 import styles from "./styles.module.css";
 import { TokenImage } from "./token-image";
 import { TokenList } from "./token-list";
@@ -24,64 +24,43 @@ const TokenSelector = memo<TokenSelectorProps>(
   ({ token, onTokenSelect, position, label }) => {
     const { assets, isAssetsLoading } = useConverter();
 
-    const [open, setOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [step, setStep] = useState<DialogStep>("network");
+    const [networkDialogOpen, setNetworkDialogOpen] = useState(false);
+    const [tokenDialogOpen, setTokenDialogOpen] = useState(false);
+    const [networkSearchQuery, setNetworkSearchQuery] = useState("");
+    const [tokenSearchQuery, setTokenSearchQuery] = useState("");
     const [selectedNetwork, setSelectedNetwork] = useState<NetworkInfo | null>(
       null,
     );
 
-    const handleKeyDown = useCallback(
+    const handleNetworkKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Escape") {
-          if (step === "token" && selectedNetwork) {
-            setStep("network");
-            setSelectedNetwork(null);
-            setSearchQuery("");
-          } else {
-            setOpen(false);
-            setSearchQuery("");
-            setStep("network");
-            setSelectedNetwork(null);
-          }
+          setNetworkDialogOpen(false);
+          setNetworkSearchQuery("");
         }
       },
-      [step, selectedNetwork],
+      [],
     );
 
-    // Get unique networks from assets
-    const availableNetworks = useMemo(() => {
-      if (!assets) return [];
-
-      const networkMap = new Map<number, NetworkInfo>();
-
-      assets.forEach((asset) => {
-        const chainId = Number(asset.chain);
-        if (!networkMap.has(chainId)) {
-          networkMap.set(chainId, {
-            chainId,
-            name: getNetworkName(chainId),
-            icon: getChainLogo(getNetworkName(chainId)),
-          });
+    const handleTokenKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Escape") {
+          setTokenDialogOpen(false);
+          setTokenSearchQuery("");
         }
-      });
+      },
+      [],
+    );
 
-      return Array.from(networkMap.values()).sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
-    }, [assets]);
-
-    // Filter networks by search query
     const filteredNetworks = useMemo(() => {
-      if (!searchQuery.trim()) return availableNetworks;
+      if (!networkSearchQuery.trim()) return NETWORKS;
 
-      const query = searchQuery.toLowerCase();
-      return availableNetworks.filter((network) =>
+      const query = networkSearchQuery.toLowerCase();
+      return NETWORKS.filter((network) =>
         network.name.toLowerCase().includes(query),
       );
-    }, [availableNetworks, searchQuery]);
+    }, [networkSearchQuery]);
 
-    // Get tokens for selected network
     const networkTokens = useMemo(() => {
       if (!assets || !selectedNetwork) return [];
 
@@ -90,48 +69,55 @@ const TokenSelector = memo<TokenSelectorProps>(
       );
     }, [assets, selectedNetwork]);
 
-    // Filter tokens by search query
-    const filteredTokens = useMemo(() => {
-      if (!searchQuery.trim()) return networkTokens;
+    console.log(assets);
 
-      const query = searchQuery.toLowerCase();
+    const filteredTokens = useMemo(() => {
+      if (!tokenSearchQuery.trim()) return networkTokens;
+
+      const query = tokenSearchQuery.toLowerCase();
       return networkTokens.filter(
         (asset: Erc20AssetInfo) =>
           asset.name?.toLowerCase().includes(query) ||
           asset.symbol?.toLowerCase().includes(query),
       );
-    }, [networkTokens, searchQuery]);
+    }, [networkTokens, tokenSearchQuery]);
 
     const handleNetworkSelect = useCallback((network: NetworkInfo) => {
       setSelectedNetwork(network);
-      setStep("token");
-      setSearchQuery("");
+      setNetworkDialogOpen(false);
+      setNetworkSearchQuery("");
+      setTokenDialogOpen(true);
     }, []);
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
         onTokenSelect(selectedToken);
-        setOpen(false);
-        setSearchQuery("");
-        setStep("network");
+        setTokenDialogOpen(false);
+        setTokenSearchQuery("");
         setSelectedNetwork(null);
       },
       [onTokenSelect],
     );
 
-    const handleOpenChange = useCallback((newOpen: boolean) => {
-      setOpen(newOpen);
+    const handleNetworkDialogOpenChange = useCallback((newOpen: boolean) => {
+      setNetworkDialogOpen(newOpen);
       if (!newOpen) {
-        setSearchQuery("");
-        setStep("network");
+        setNetworkSearchQuery("");
+      }
+    }, []);
+
+    const handleTokenDialogOpenChange = useCallback((newOpen: boolean) => {
+      setTokenDialogOpen(newOpen);
+      if (!newOpen) {
+        setTokenSearchQuery("");
         setSelectedNetwork(null);
       }
     }, []);
 
     const handleBack = useCallback(() => {
-      setStep("network");
-      setSelectedNetwork(null);
-      setSearchQuery("");
+      setTokenDialogOpen(false);
+      setTokenSearchQuery("");
+      setNetworkDialogOpen(true);
     }, []);
 
     const tokenSymbol = token?.symbol || "";
@@ -140,7 +126,10 @@ const TokenSelector = memo<TokenSelectorProps>(
     return (
       <div data-position={position} className={styles.dialog}>
         <motion.div layout transition={SPRING_CONFIG}>
-          <BaseDialog.Root open={open} onOpenChange={handleOpenChange}>
+          <BaseDialog.Root
+            open={networkDialogOpen}
+            onOpenChange={handleNetworkDialogOpenChange}
+          >
             <BaseDialog.Trigger
               className={styles.trigger}
               aria-label={`Select ${label} token`}
@@ -161,71 +150,32 @@ const TokenSelector = memo<TokenSelectorProps>(
                     {...loading}
                     key="loaded"
                   >
-                    <div className={styles.icongroup}>
-                      <AnimatePresence initial={false} mode="popLayout">
-                        <TokenImage
-                          width={16}
-                          height={16}
-                          key={tokenSymbol}
-                          className={styles.icon}
-                          alt={`${tokenSymbol} icon`}
-                          address={token?.address || ""}
-                          chain={token?.chain || ""}
-                        />
-                      </AnimatePresence>
-                    </div>
-                    <div className={styles.tokeninfo}>
-                      <AnimatePresence initial={false} mode="popLayout">
-                        <motion.div
-                          {...blur}
-                          layout="position"
-                          key={`${tokenSymbol}-label`}
-                          className={styles.label}
-                        >
-                          {tokenSymbol}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
+                    <AnimatePresence initial={false} mode="popLayout">
+                      <TokenImage
+                        width={16}
+                        height={16}
+                        key={tokenSymbol}
+                        className={styles.icon}
+                        alt={`${tokenSymbol} icon`}
+                        address={token?.address || ""}
+                        chain={token?.chain || ""}
+                      />
+                    </AnimatePresence>
+                    <AnimatePresence initial={false} mode="popLayout">
+                      <motion.div
+                        {...blur}
+                        layout="position"
+                        key={`${tokenSymbol}-label`}
+                        className={styles.label}
+                      >
+                        {tokenSymbol}
+                      </motion.div>
+                    </AnimatePresence>
                   </motion.div>
                 )}
               </AnimatePresence>
             </BaseDialog.Trigger>
-            <BaseDialog.Portal>
-              <BaseDialog.Backdrop className={styles.backdrop} />
-              <BaseDialog.Popup
-                className={styles.popup}
-                role="dialog"
-                aria-label={`${label} token selector`}
-              >
-                <SearchInput
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  onKeyDown={handleKeyDown}
-                  step={step}
-                />
-
-                {step === "network" && (
-                  <NetworkList
-                    networks={filteredNetworks}
-                    onNetworkSelect={handleNetworkSelect}
-                  />
-                )}
-
-                {step === "token" && selectedNetwork && (
-                  <>
-                    <DialogHeader
-                      selectedNetwork={selectedNetwork}
-                      onBack={handleBack}
-                    />
-                    <TokenList
-                      tokens={filteredTokens}
-                      selectedToken={token}
-                      onTokenSelect={handleTokenSelect}
-                    />
-                  </>
-                )}
-              </BaseDialog.Popup>
-            </BaseDialog.Portal>
+            <NetworksDialog assets={assets || []} />
           </BaseDialog.Root>
         </motion.div>
       </div>

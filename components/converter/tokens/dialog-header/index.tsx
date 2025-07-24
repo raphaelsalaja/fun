@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { memo } from "react";
 import type { NetworkInfo } from "../network-list";
+import { TokenImage } from "../token-image";
 import styles from "./styles.module.css";
 
 interface DialogHeaderProps {

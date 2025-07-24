@@ -9,7 +9,15 @@
     width: 24px;
     height: 24px;
     aspect-ratio: 1 / 1;
-    mask: radial-gradient(circle 8px at 20px 20px, transparent 99%, white 100%);
+    border-radius: 100px;
+
+    &[data-mask="true"] {
+      mask: radial-gradient(
+        circle 8px at 20px 20px,
+        transparent 99%,
+        white 100%
+      );
+    }
   }
 
   .network {
@@ -20,6 +28,7 @@
     width: 12px;
     height: 12px;
     aspect-ratio: 1 / 1;
+    outline: 0.5px solid oklch(0 0 0 / 10%);
     border-radius: 1000px;
   }
 }
