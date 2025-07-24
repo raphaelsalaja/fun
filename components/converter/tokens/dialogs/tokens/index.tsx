@@ -58,7 +58,7 @@ export const TokensDialog = memo<TokensDialogProps>(
                         width={40}
                         height={40}
                         alt={`${token.name} icon`}
-                        src={getTokenLogo(chain, token.address)}
+                        src={getTokenLogo(chain, token.address, token.symbol)}
                         fallback={
                           <motion.div
                             {...loading}

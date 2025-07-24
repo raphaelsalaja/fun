@@ -34,6 +34,7 @@ const TokenIcon = memo<TokenIconProps>(({ tokenSymbol, token, isLoading }) => {
           alt={`${tokenSymbol} icon`}
           address={token?.address || ""}
           chain={token?.chain || ""}
+          symbol={tokenSymbol}
         />
       </motion.div>
     </AnimatePresence>

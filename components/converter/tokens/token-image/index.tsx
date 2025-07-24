@@ -8,6 +8,7 @@ import styles from "./styles.module.css";
 interface TokenImageProps {
   address: string;
   chain: string;
+  symbol: string;
   alt: string;
   className?: string;
   width: number;
@@ -15,7 +16,7 @@ interface TokenImageProps {
 }
 
 export const TokenImage = memo<TokenImageProps>(
-  ({ chain, address, alt, width, height }) => {
+  ({ chain, address, symbol, alt, width, height }) => {
     const tokenFallback = (
       <div data-mask={true} className={styles.placeholder}>
         {alt.charAt(0).toUpperCase()}
@@ -34,7 +35,7 @@ export const TokenImage = memo<TokenImageProps>(
           height={height}
           className={styles.token}
           alt={alt}
-          src={getTokenLogo(chain, address)}
+          src={getTokenLogo(chain, address, symbol)}
           unoptimized
           data-mask={true}
           fallback={tokenFallback}
