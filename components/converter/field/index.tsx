@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CurrencyInput, {
   type CurrencyInputProps,
 } from "react-currency-input-field";
@@ -8,31 +8,51 @@ import styles from "./styles.module.css";
 export function Field({ ...props }: CurrencyInputProps) {
   const { amount, setAmount } = useConverter();
   const [localValue, setLocalValue] = useState<string>("");
+  const [isUserTyping, setIsUserTyping] = useState(false);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const lastExternalUpdate = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    if (amount !== undefined) {
-      setLocalValue(amount.toString());
+    if (
+      amount !== undefined &&
+      !isUserTyping &&
+      amount !== lastExternalUpdate.current
+    ) {
+      lastExternalUpdate.current = amount;
+      setLocalValue(amount === 0 ? "" : amount.toString());
     }
-  }, [amount]);
+  }, [amount, isUserTyping]);
 
-  useEffect(() => {
-    if (localValue === "") {
-      setAmount(0);
-      return;
-    }
+  const handleValueChange = useCallback(
+    (value: string | undefined) => {
+      const newValue = value || "";
+      setLocalValue(newValue);
+      setIsUserTyping(true);
 
-    const timeoutId = setTimeout(() => {
-      const numericValue = Number(localValue) || 0;
-      if (numericValue !== amount) {
-        setAmount(numericValue);
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
       }
-    }, 400);
 
-    return () => clearTimeout(timeoutId);
-  }, [localValue, setAmount, amount]);
+      debounceRef.current = setTimeout(() => {
+        const numericValue = newValue === "" ? 0 : Number(newValue) || 0;
 
-  const handleValueChange = useCallback((value: string | undefined) => {
-    setLocalValue(value || "");
+        if (numericValue !== amount) {
+          lastExternalUpdate.current = numericValue;
+          setAmount(numericValue);
+        }
+
+        setIsUserTyping(false);
+      }, 300);
+    },
+    [amount, setAmount],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -45,7 +65,7 @@ export function Field({ ...props }: CurrencyInputProps) {
         className={styles.input}
         value={localValue}
         onValueChange={handleValueChange}
-        placeholder=""
+        placeholder="$0.00"
       />
     </div>
   );
