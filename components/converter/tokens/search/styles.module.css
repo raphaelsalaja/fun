@@ -14,8 +14,8 @@
   .input {
     flex: 1;
     font-size: 16px;
+    font-variation-settings: var(--font-weight-500);
     font-style: normal;
-    font-weight: 500;
     line-height: 150%;
     color: var(--text-quaternary);
     letter-spacing: -0.18px;

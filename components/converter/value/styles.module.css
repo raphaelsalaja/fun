@@ -1,7 +1,7 @@
 .value {
   font-size: 32px;
+  font-variation-settings: var(--font-weight-500);
   font-style: normal;
-  font-weight: 500;
   line-height: normal;
   color: var(--text-quaternary);
   letter-spacing: -0.69px;

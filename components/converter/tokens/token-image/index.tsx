@@ -1,8 +1,7 @@
 import { motion } from "motion/react";
-import Image from "next/image";
 import { memo } from "react";
+import { Image } from "@/components/image";
 import { scale } from "@/lib/animations";
-import { getNetworkName } from "@/lib/tokens";
 import { getChainLogo, getTokenLogo } from "@/lib/uniswap";
 import styles from "./styles.module.css";
 
@@ -17,8 +16,6 @@ interface TokenImageProps {
 
 export const TokenImage = memo<TokenImageProps>(
   ({ chain, address, alt, width, height }) => {
-    chain = Number.isNaN(Number(chain)) ? chain : getNetworkName(Number(chain));
-
     return (
       <motion.div {...scale} layout="position" className={styles.icon}>
         <Image
@@ -56,8 +53,6 @@ interface NetworkImageProps {
 
 export const NetworkImage = memo<NetworkImageProps>(
   ({ chain, alt, width, height }) => {
-    chain = Number.isNaN(Number(chain)) ? chain : getNetworkName(Number(chain));
-
     return (
       <motion.div {...scale} layout="position" className={styles.icon}>
         <Image

@@ -1,17 +1,12 @@
 import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion } from "motion/react";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { blur, loading, SPRING_CONFIG } from "@/lib/animations";
-import { NETWORKS } from "@/lib/networks";
 import { useConverter } from "../provider";
-import { DialogHeader } from "./dialog-header";
 import { NetworksDialog } from "./dialogs/networks";
-import { type NetworkInfo, NetworkList } from "./network-list";
-import { SearchInput } from "./search-input";
 import styles from "./styles.module.css";
 import { TokenImage } from "./token-image";
-import { TokenList } from "./token-list";
 
 interface TokenSelectorProps {
   token: Erc20AssetInfo | undefined;
@@ -25,99 +20,17 @@ const TokenSelector = memo<TokenSelectorProps>(
     const { assets, isAssetsLoading } = useConverter();
 
     const [networkDialogOpen, setNetworkDialogOpen] = useState(false);
-    const [tokenDialogOpen, setTokenDialogOpen] = useState(false);
-    const [networkSearchQuery, setNetworkSearchQuery] = useState("");
-    const [tokenSearchQuery, setTokenSearchQuery] = useState("");
-    const [selectedNetwork, setSelectedNetwork] = useState<NetworkInfo | null>(
-      null,
-    );
-
-    const handleNetworkKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Escape") {
-          setNetworkDialogOpen(false);
-          setNetworkSearchQuery("");
-        }
-      },
-      [],
-    );
-
-    const handleTokenKeyDown = useCallback(
-      (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Escape") {
-          setTokenDialogOpen(false);
-          setTokenSearchQuery("");
-        }
-      },
-      [],
-    );
-
-    const filteredNetworks = useMemo(() => {
-      if (!networkSearchQuery.trim()) return NETWORKS;
-
-      const query = networkSearchQuery.toLowerCase();
-      return NETWORKS.filter((network) =>
-        network.name.toLowerCase().includes(query),
-      );
-    }, [networkSearchQuery]);
-
-    const networkTokens = useMemo(() => {
-      if (!assets || !selectedNetwork) return [];
-
-      return assets.filter(
-        (asset) => Number(asset.chain) === selectedNetwork.chainId,
-      );
-    }, [assets, selectedNetwork]);
-
-    console.log(assets);
-
-    const filteredTokens = useMemo(() => {
-      if (!tokenSearchQuery.trim()) return networkTokens;
-
-      const query = tokenSearchQuery.toLowerCase();
-      return networkTokens.filter(
-        (asset: Erc20AssetInfo) =>
-          asset.name?.toLowerCase().includes(query) ||
-          asset.symbol?.toLowerCase().includes(query),
-      );
-    }, [networkTokens, tokenSearchQuery]);
-
-    const handleNetworkSelect = useCallback((network: NetworkInfo) => {
-      setSelectedNetwork(network);
-      setNetworkDialogOpen(false);
-      setNetworkSearchQuery("");
-      setTokenDialogOpen(true);
-    }, []);
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
         onTokenSelect(selectedToken);
-        setTokenDialogOpen(false);
-        setTokenSearchQuery("");
-        setSelectedNetwork(null);
+        setNetworkDialogOpen(false);
       },
       [onTokenSelect],
     );
 
     const handleNetworkDialogOpenChange = useCallback((newOpen: boolean) => {
       setNetworkDialogOpen(newOpen);
-      if (!newOpen) {
-        setNetworkSearchQuery("");
-      }
-    }, []);
-
-    const handleTokenDialogOpenChange = useCallback((newOpen: boolean) => {
-      setTokenDialogOpen(newOpen);
-      if (!newOpen) {
-        setTokenSearchQuery("");
-        setSelectedNetwork(null);
-      }
-    }, []);
-
-    const handleBack = useCallback(() => {
-      setTokenDialogOpen(false);
-      setTokenSearchQuery("");
-      setNetworkDialogOpen(true);
     }, []);
 
     const tokenSymbol = token?.symbol || "";
@@ -175,7 +88,10 @@ const TokenSelector = memo<TokenSelectorProps>(
                 )}
               </AnimatePresence>
             </BaseDialog.Trigger>
-            <NetworksDialog assets={assets || []} />
+            <NetworksDialog
+              assets={assets || []}
+              onTokenSelect={handleTokenSelect}
+            />
           </BaseDialog.Root>
         </motion.div>
       </div>
