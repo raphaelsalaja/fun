@@ -22,13 +22,39 @@
   box-shadow: 0 0 0 8px var(--background-primary);
   transition: all 150ms ease-in-out;
 
+  .wrapper {
+    overflow: hidden;
+  }
+
   .content {
+    display: inline-block;
+  }
+
+  .inner {
     display: flex;
     gap: 6px;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     height: 36px;
     padding: 8px 12px 8px 8px;
+    white-space: nowrap;
+  }
+
+  .iconcontainer {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .labelcontainer {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 20px;
+    overflow: hidden;
   }
 
   &:hover {

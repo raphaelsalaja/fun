@@ -2,7 +2,8 @@ import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
 import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion } from "motion/react";
 import { memo, useCallback, useState } from "react";
-import { blur, loading, SPRING_CONFIG } from "@/lib/animations";
+import useMeasure from "react-use-measure";
+import { blur, loading, SPRING_CONFIG, scale } from "@/lib/animations";
 import { useConverter } from "../provider";
 import { NetworksDialog } from "./dialogs/networks";
 import styles from "./styles.module.css";
@@ -20,6 +21,7 @@ const TokenSelector = memo<TokenSelectorProps>(
     const { assets, isAssetsLoading } = useConverter();
 
     const [networkDialogOpen, setNetworkDialogOpen] = useState(false);
+    const [ref, bounds] = useMeasure();
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
@@ -47,46 +49,68 @@ const TokenSelector = memo<TokenSelectorProps>(
               className={styles.trigger}
               aria-label={`Select ${label} token`}
             >
-              <AnimatePresence initial={false} mode="wait">
-                {isLoading ? (
-                  <motion.div
-                    key="loading"
-                    className={styles.content}
-                    {...loading}
-                  >
-                    <div className={styles.loading} data-variant="icon" />
-                    <div className={styles.loading} data-variant="label" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    className={styles.content}
-                    {...loading}
-                    key="loaded"
-                  >
-                    <AnimatePresence initial={false} mode="popLayout">
-                      <TokenImage
-                        width={16}
-                        height={16}
-                        key={tokenSymbol}
-                        className={styles.icon}
-                        alt={`${tokenSymbol} icon`}
-                        address={token?.address || ""}
-                        chain={token?.chain || ""}
-                      />
-                    </AnimatePresence>
-                    <AnimatePresence initial={false} mode="popLayout">
+              <motion.div
+                className={styles.wrapper}
+                animate={{ width: bounds.width || "auto" }}
+                transition={SPRING_CONFIG}
+              >
+                <div ref={ref} className={styles.content}>
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {isLoading ? (
                       <motion.div
-                        {...blur}
-                        layout="position"
-                        key={`${tokenSymbol}-label`}
-                        className={styles.label}
+                        key="loading"
+                        className={styles.inner}
+                        {...loading}
                       >
-                        {tokenSymbol}
+                        <div className={styles.iconcontainer}>
+                          <div className={styles.loading} data-variant="icon" />
+                        </div>
+                        <div className={styles.labelcontainer}>
+                          <div
+                            className={styles.loading}
+                            data-variant="label"
+                          />
+                        </div>
                       </motion.div>
-                    </AnimatePresence>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    ) : (
+                      <motion.div
+                        key="loaded"
+                        className={styles.inner}
+                        {...loading}
+                      >
+                        <AnimatePresence initial={false} mode="popLayout">
+                          <motion.div
+                            key={tokenSymbol}
+                            {...scale}
+                            layout="position"
+                            className={styles.iconcontainer}
+                          >
+                            <TokenImage
+                              width={16}
+                              height={16}
+                              className={styles.icon}
+                              alt={`${tokenSymbol} icon`}
+                              address={token?.address || ""}
+                              chain={token?.chain || ""}
+                            />
+                          </motion.div>
+                        </AnimatePresence>
+                        <div className={styles.labelcontainer}>
+                          <AnimatePresence initial={false} mode="popLayout">
+                            <motion.div
+                              key={tokenSymbol}
+                              className={styles.label}
+                              {...blur}
+                            >
+                              {tokenSymbol}
+                            </motion.div>
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
             </BaseDialog.Trigger>
             <NetworksDialog
               assets={assets || []}
