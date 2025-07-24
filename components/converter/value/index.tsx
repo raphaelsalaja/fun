@@ -4,8 +4,9 @@ import styles from "./styles.module.css";
 
 const format: Format = {
   style: "decimal",
+  notation: "compact",
   minimumIntegerDigits: 1,
-  minimumFractionDigits: 2,
+  minimumFractionDigits: 6,
   maximumFractionDigits: 6,
   useGrouping: "false",
   trailingZeroDisplay: "auto",
