@@ -9,14 +9,12 @@ export function Field({ ...props }: CurrencyInputProps) {
   const { amount, setAmount } = useConverter();
   const [localValue, setLocalValue] = useState<string>("");
 
-  // Update local value when amount changes from outside
   useEffect(() => {
     if (amount !== undefined) {
       setLocalValue(amount.toString());
     }
   }, [amount]);
 
-  // Debounced update to global state
   useEffect(() => {
     if (localValue === "") {
       setAmount(0);
@@ -28,7 +26,7 @@ export function Field({ ...props }: CurrencyInputProps) {
       if (numericValue !== amount) {
         setAmount(numericValue);
       }
-    }, 1000); // 1 second debounce
+    }, 400);
 
     return () => clearTimeout(timeoutId);
   }, [localValue, setAmount, amount]);

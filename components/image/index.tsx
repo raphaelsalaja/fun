@@ -39,11 +39,7 @@ export function Image({ fallback, ...props }: ImageProps) {
             unoptimized
           />
         ) : (
-          fallback || (
-            <motion.div {...loading} className={styles.error}>
-              Image failed to load
-            </motion.div>
-          )
+          fallback
         )}
       </AnimatePresence>
     </React.Fragment>

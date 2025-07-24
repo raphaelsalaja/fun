@@ -16,8 +16,19 @@ interface TokenImageProps {
 
 export const TokenImage = memo<TokenImageProps>(
   ({ chain, address, alt, width, height }) => {
+    const tokenFallback = (
+      <div data-mask={true} className={styles.placeholder}>
+        {alt.charAt(0).toUpperCase()}
+      </div>
+    );
+
     return (
-      <motion.div {...scale} layout="position" className={styles.icon}>
+      <motion.div
+        key={`${chain}-${address}`}
+        {...scale}
+        layout="position"
+        className={styles.icon}
+      >
         <Image
           width={width}
           height={height}
@@ -26,6 +37,7 @@ export const TokenImage = memo<TokenImageProps>(
           src={getTokenLogo(chain, address)}
           unoptimized
           data-mask={true}
+          fallback={tokenFallback}
         />
         {chain && (
           <Image
@@ -53,6 +65,10 @@ interface NetworkImageProps {
 
 export const NetworkImage = memo<NetworkImageProps>(
   ({ chain, alt, width, height }) => {
+    const networkFallback = (
+      <div className={styles.placeholder}>{chain.charAt(0).toUpperCase()}</div>
+    );
+
     return (
       <motion.div {...scale} layout="position" className={styles.icon}>
         <Image
@@ -62,10 +78,11 @@ export const NetworkImage = memo<NetworkImageProps>(
           alt={alt}
           src={getChainLogo(chain)}
           unoptimized
+          fallback={networkFallback}
         />
       </motion.div>
     );
   },
 );
 
-TokenImage.displayName = "TokenImage";
+NetworkImage.displayName = "NetworkImage";
