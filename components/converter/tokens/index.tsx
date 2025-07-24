@@ -3,11 +3,140 @@ import type { Erc20AssetInfo } from "@funkit/api-base";
 import { AnimatePresence, motion } from "motion/react";
 import { memo, useCallback, useState } from "react";
 import useMeasure from "react-use-measure";
-import { blur, loading, SPRING_CONFIG, scale } from "@/lib/animations";
+import { blur, SPRING_CONFIG, scale } from "@/lib/animations";
 import { useConverter } from "../provider";
 import { NetworksDialog } from "./dialogs/networks";
 import styles from "./styles.module.css";
 import { TokenImage } from "./token-image";
+
+interface TokenIconProps {
+  tokenSymbol: string;
+  token: Erc20AssetInfo | undefined;
+  isLoading: boolean;
+}
+
+const TokenIcon = memo<TokenIconProps>(({ tokenSymbol, token, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className={styles.iconcontainer}>
+        <div className={styles.loading} data-variant="icon" />
+      </div>
+    );
+  }
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div {...scale} key={tokenSymbol} className={styles.iconcontainer}>
+        <TokenImage
+          width={16}
+          height={16}
+          className={styles.icon}
+          alt={`${tokenSymbol} icon`}
+          address={token?.address || ""}
+          chain={token?.chain || ""}
+        />
+      </motion.div>
+    </AnimatePresence>
+  );
+});
+
+TokenIcon.displayName = "TokenIcon";
+
+interface TokenLabelProps {
+  tokenSymbol: string;
+  isLoading: boolean;
+}
+
+const TokenLabel = memo<TokenLabelProps>(({ tokenSymbol, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className={styles.labelcontainer}>
+        <div className={styles.loading} data-variant="label" />
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.labelcontainer}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div key={tokenSymbol} className={styles.label} {...blur}>
+          {tokenSymbol}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+});
+
+TokenLabel.displayName = "TokenLabel";
+
+interface TokenContentProps {
+  tokenSymbol: string;
+  token: Erc20AssetInfo | undefined;
+  isLoading: boolean;
+}
+
+const TokenContent = memo<TokenContentProps>(
+  ({ tokenSymbol, token, isLoading }) => {
+    return (
+      <motion.div
+        key={isLoading ? "loading" : "loaded"}
+        className={styles.inner}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
+        <TokenIcon
+          tokenSymbol={tokenSymbol}
+          token={token}
+          isLoading={isLoading}
+        />
+        <TokenLabel tokenSymbol={tokenSymbol} isLoading={isLoading} />
+      </motion.div>
+    );
+  },
+);
+
+TokenContent.displayName = "TokenContent";
+
+interface TokenTriggerProps {
+  tokenSymbol: string;
+  token: Erc20AssetInfo | undefined;
+  isLoading: boolean;
+  label: string;
+}
+
+const TokenTrigger = memo<TokenTriggerProps>(
+  ({ tokenSymbol, token, isLoading, label }) => {
+    const [ref, bounds] = useMeasure();
+
+    return (
+      <BaseDialog.Trigger
+        className={styles.trigger}
+        aria-label={`Select ${label} token`}
+      >
+        <motion.div
+          className={styles.wrapper}
+          animate={{ width: bounds.width || "auto" }}
+          transition={SPRING_CONFIG}
+        >
+          <div ref={ref} className={styles.content}>
+            <AnimatePresence mode="wait" initial={false}>
+              <TokenContent
+                key={isLoading ? "loading" : "loaded"}
+                tokenSymbol={tokenSymbol}
+                token={token}
+                isLoading={isLoading}
+              />
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </BaseDialog.Trigger>
+    );
+  },
+);
+
+TokenTrigger.displayName = "TokenTrigger";
 
 interface TokenSelectorProps {
   token: Erc20AssetInfo | undefined;
@@ -21,7 +150,6 @@ const TokenSelector = memo<TokenSelectorProps>(
     const { assets, isAssetsLoading } = useConverter();
 
     const [networkDialogOpen, setNetworkDialogOpen] = useState(false);
-    const [ref, bounds] = useMeasure();
 
     const handleTokenSelect = useCallback(
       (selectedToken: Erc20AssetInfo) => {
@@ -45,73 +173,12 @@ const TokenSelector = memo<TokenSelectorProps>(
             open={networkDialogOpen}
             onOpenChange={handleNetworkDialogOpenChange}
           >
-            <BaseDialog.Trigger
-              className={styles.trigger}
-              aria-label={`Select ${label} token`}
-            >
-              <motion.div
-                className={styles.wrapper}
-                animate={{ width: bounds.width || "auto" }}
-                transition={SPRING_CONFIG}
-              >
-                <div ref={ref} className={styles.content}>
-                  <AnimatePresence initial={false} mode="popLayout">
-                    {isLoading ? (
-                      <motion.div
-                        key="loading"
-                        className={styles.inner}
-                        {...loading}
-                      >
-                        <div className={styles.iconcontainer}>
-                          <div className={styles.loading} data-variant="icon" />
-                        </div>
-                        <div className={styles.labelcontainer}>
-                          <div
-                            className={styles.loading}
-                            data-variant="label"
-                          />
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="loaded"
-                        className={styles.inner}
-                        {...loading}
-                      >
-                        <AnimatePresence initial={false} mode="popLayout">
-                          <motion.div
-                            key={tokenSymbol}
-                            {...scale}
-                            layout="position"
-                            className={styles.iconcontainer}
-                          >
-                            <TokenImage
-                              width={16}
-                              height={16}
-                              className={styles.icon}
-                              alt={`${tokenSymbol} icon`}
-                              address={token?.address || ""}
-                              chain={token?.chain || ""}
-                            />
-                          </motion.div>
-                        </AnimatePresence>
-                        <div className={styles.labelcontainer}>
-                          <AnimatePresence initial={false} mode="popLayout">
-                            <motion.div
-                              key={tokenSymbol}
-                              className={styles.label}
-                              {...blur}
-                            >
-                              {tokenSymbol}
-                            </motion.div>
-                          </AnimatePresence>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            </BaseDialog.Trigger>
+            <TokenTrigger
+              tokenSymbol={tokenSymbol}
+              token={token}
+              isLoading={isLoading}
+              label={label}
+            />
             <NetworksDialog
               assets={assets || []}
               onTokenSelect={handleTokenSelect}

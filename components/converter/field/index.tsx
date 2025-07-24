@@ -39,12 +39,13 @@ export function Field({ ...props }: CurrencyInputProps) {
     <div className={styles.field}>
       <CurrencyInput
         {...props}
-        placeholder="$0.00"
+        min={0}
         prefix="$"
         decimalsLimit={2}
         className={styles.input}
         value={localValue}
         onValueChange={handleValueChange}
+        placeholder=""
       />
     </div>
   );
