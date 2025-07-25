@@ -4,7 +4,7 @@ const SwappedAssets = ["A8", "AAVE"];
 
 function getTokenLogo(chain: string, address: string, symbol: string): string {
   if (SwappedAssets.includes(symbol)) {
-    return `/images/tokens/${symbol}.svg`;
+    return `/${symbol}.svg`;
   }
 
   return `https://raw.githubusercontent.com/Uniswap/assets/refs/heads/master/blockchains/${resolveChainName(chain)}/assets/${address}/logo.png`;
@@ -12,7 +12,7 @@ function getTokenLogo(chain: string, address: string, symbol: string): string {
 
 function getChainLogo(chain: string): string {
   if (SwappedAssets.includes(chain)) {
-    return `/images/tokens/${chain}.svg`;
+    return `/${chain}.svg`;
   }
 
   return `https://raw.githubusercontent.com/Uniswap/assets/refs/heads/master/blockchains/${resolveChainName(chain)}/info/logo.png`;
