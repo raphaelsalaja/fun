@@ -11,7 +11,7 @@ export function ToastList() {
         style={
           { "--toast-index": toasts.indexOf(toast) } as React.CSSProperties
         }
-        data-fuck
+        data-toast
       />
       <Toast.Root
         toast={toast}
