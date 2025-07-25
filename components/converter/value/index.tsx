@@ -6,7 +6,7 @@ const format: Format = {
   style: "decimal",
   notation: "compact",
   minimumIntegerDigits: 1,
-  minimumFractionDigits: 6,
+  minimumFractionDigits: 2,
   maximumFractionDigits: 6,
   useGrouping: "false",
   trailingZeroDisplay: "auto",
