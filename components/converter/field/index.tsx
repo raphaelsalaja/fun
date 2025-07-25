@@ -46,7 +46,7 @@ export function Field({ ...props }: CurrencyInputProps) {
 
       const numericValue = Number(newValue) || 0;
 
-      if (numericValue > 999_999) {
+      if (numericValue > 999_999.99) {
         const existingToast = toastManager.toasts.find(
           (toast) => toast.title === "Toast created",
         );
